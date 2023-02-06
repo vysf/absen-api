@@ -18,30 +18,9 @@ exports.up = (pgm) => {
       type: 'TEXT',
       notNull: true,
     },
-    golongan: {
-      type: 'VARCHAR(6)',
-    },
-    nip: {
-      type: 'VARCHAR(18)',
-    },
-    nidn: {
-      type: 'VARCHAR(10)',
-    },
-    pangkat: {
-      type: 'VARCHAR(23)',
-    },
     role: {
       type: 'TEXT',
       notNull: true,
-    },
-    jabatan_struktural: {
-      type: 'VARCHAR(50)',
-    },
-    jabatan_fungsional: {
-      type: 'VARCHAR(50)',
-    },
-    status_kehadiran: {
-      type: 'VARCHAR(50)',
     },
     created_at: {
       type: 'TEXT',
@@ -50,7 +29,35 @@ exports.up = (pgm) => {
     updated_at: {
       type: 'TEXT',
       notNull: true,
-    }
+    },
+    golongan: {
+      type: 'VARCHAR(6)',
+      default: null,
+    },
+    nip: {
+      type: 'VARCHAR(18)',
+      default: null,
+    },
+    nidn: {
+      type: 'VARCHAR(10)',
+      default: null,
+    },
+    pangkat: {
+      type: 'VARCHAR(23)',
+      default: null,
+    },
+    jabatan_struktural: {
+      type: 'VARCHAR(50)',
+      default: null,
+    },
+    jabatan_fungsional: {
+      type: 'VARCHAR(50)',
+      default: null,
+    },
+    status_kehadiran: {
+      type: 'VARCHAR(50)',
+      default: null,
+    },
   });
 };
 
