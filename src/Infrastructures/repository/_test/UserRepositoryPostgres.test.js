@@ -5,6 +5,8 @@ const RegisteredUser = require('../../../Domains/users/entities/RegisteredUser')
 const pool = require('../../database/postgres/pool');
 const UserRepositoryPostgres = require('../UserRepositoryPostgres');
 
+const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
+
 describe('UserRepositoryPostgres', () => {
   afterEach(async () => {
     await UsersTableTestHelper.cleanTable();
@@ -300,6 +302,32 @@ describe('UserRepositoryPostgres', () => {
         jabatanStruktural: null,
         pangkat: null,
       });
+    });
+  });
+
+  describe('checkUserIsExist', () => {
+    it('should check if user is exist correctly', async () => {
+      // Arrange
+      const id = 'user-098';
+      await UsersTableTestHelper.addUser({
+        id,
+        username: 'dosenhebat',
+        fullname: 'dosen 1',
+        password: 'secret',
+      });
+
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(userRepositoryPostgres.checkUserIsExist(id)).resolves.not.toThrow(NotFoundError);
+    });
+
+    it('should check if user is exist correctly', async () => {
+      // Arrange
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(userRepositoryPostgres.checkUserIsExist('user-109')).rejects.toThrow(NotFoundError);
     });
   });
 });

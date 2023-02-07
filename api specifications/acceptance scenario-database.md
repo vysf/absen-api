@@ -144,7 +144,7 @@ Sql:
 SELECT * FROM users WHERE id = id
 ```
 
-#### 6. checkUserIsExist(id)
+#### ✅ 6. checkUserIsExist(id)
 Fitur: Mengecek data seorang pengguna ada/tidak didalam database
 
 Deskripsi: Melakukan proses pengecekan ada/tidak data pengguna menggunakan id. mirip getUsersById({id}), hanya beda pada pengembalian data.
@@ -153,8 +153,10 @@ Payload:
 - id (String)
 
 Skenario test:
-- Ketika id tidak ada
-	- Mengembalikan ```InvariantError```
+- ~~Ketika user tidak ada~~
+	- ~~Mengembalikan ```NotFoundError```~~
+- ~~Ketika user ada~~
+	- ~~Tidak mengembalikan ```NotFoundError```~~
 
 Sql:
 ```sql
