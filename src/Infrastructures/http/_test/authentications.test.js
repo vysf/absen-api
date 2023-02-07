@@ -68,7 +68,7 @@ describe('/authentications endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('username tidak ditemukan');
+      expect(responseJson.message).toEqual('Username tidak ditemukan');
     });
 
     it('should response 401 if password wrong', async () => {

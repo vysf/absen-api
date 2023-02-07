@@ -270,7 +270,7 @@ describe('UserRepositoryPostgres', () => {
     });
   });
 
-  describe('getUsersById', () => {
+  describe('getUserById', () => {
     it('should return user deatil by id', async () => {
       // Arrange
       const id = 'user-098';
@@ -284,7 +284,7 @@ describe('UserRepositoryPostgres', () => {
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
       // Action
-      const user = await userRepositoryPostgres.getUsersById(id);
+      const user = await userRepositoryPostgres.getUserById(id);
 
       // Assert
       expect(user).toEqual({
@@ -322,12 +322,52 @@ describe('UserRepositoryPostgres', () => {
       await expect(userRepositoryPostgres.checkUserIsExist(id)).resolves.not.toThrow(NotFoundError);
     });
 
-    it('should check if user is exist correctly', async () => {
+    it('should throw NotFoundError if user does not exist', async () => {
       // Arrange
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
       // Action & Assert
       await expect(userRepositoryPostgres.checkUserIsExist('user-109')).rejects.toThrow(NotFoundError);
+    });
+  });
+
+  describe('updateUser', () => {
+    it('should update user data correctly', async () => {
+      // Arrange
+      const id = 'user-120';
+
+      await UsersTableTestHelper.addUser({
+        id,
+        username: 'dosen1',
+        fullname: 'dosen 1',
+        password: 'secret',
+      });
+
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      const userBeforeUpdate = await userRepositoryPostgres.getUserById(id);
+
+      const dataUpdate = {
+        statusKehadiran: 'hadir',
+      };
+
+      const updatedUserData = { ...userBeforeUpdate, ...dataUpdate };
+
+      // Action
+      await userRepositoryPostgres.updateUser(id, updatedUserData);
+      const userAfterUpdate = await userRepositoryPostgres.getUserById(id);
+
+      // Assert
+      expect(userAfterUpdate).toEqual(updatedUserData);
+    });
+
+    it('should throw NotFound Error when user not exist', async () => {
+      // Arrange
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(userRepositoryPostgres.updateUser('xxx', {}))
+        .rejects.toThrow(NotFoundError);
     });
   });
 });

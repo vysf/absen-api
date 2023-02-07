@@ -20,7 +20,7 @@ class UserRepositoryPostgres extends UserRepository {
     const result = await this._pool.query(query);
 
     if (result.rowCount) {
-      throw new InvariantError('username tidak tersedia');
+      throw new InvariantError('Username tidak tersedia');
     }
   }
 
@@ -50,7 +50,7 @@ class UserRepositoryPostgres extends UserRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new InvariantError('username tidak ditemukan');
+      throw new InvariantError('Username tidak ditemukan');
     }
 
     return result.rows[0].password;
@@ -65,7 +65,7 @@ class UserRepositoryPostgres extends UserRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new InvariantError('user tidak ditemukan');
+      throw new InvariantError('User tidak ditemukan');
     }
 
     const { id } = result.rows[0];
@@ -100,7 +100,7 @@ class UserRepositoryPostgres extends UserRepository {
     });
   }
 
-  async getUsersById(id) {
+  async getUserById(id) {
     const query = {
       text: 'SELECT * FROM users WHERE id = $1',
       values: [id],
@@ -136,7 +136,44 @@ class UserRepositoryPostgres extends UserRepository {
     const result = await this._pool.query(query);
 
     if (!result.rowCount) {
-      throw new NotFoundError('user tidak ditemukan');
+      throw new NotFoundError('User tidak ditemukan');
+    }
+  }
+
+  async updateUser(id, {
+    fullname,
+    golongan,
+    nip,
+    nidn,
+    pangkat,
+    jabatanStruktural,
+    jabatanFungsional,
+    statusKehadiran,
+  }) {
+    const query = {
+      text: `UPDATE users 
+      SET fullname = $1, 
+      golongan = $2, 
+      nip = $3, 
+      nidn = $4,
+      pangkat = $5, 
+      jabatan_struktural = $6,
+      jabatan_fungsional = $7,
+      status_kehadiran = $8 
+      WHERE id = $9`,
+      values: [
+        fullname, golongan,
+        nip, nidn, pangkat,
+        jabatanStruktural,
+        jabatanFungsional,
+        statusKehadiran, id,
+      ],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('Gagal memperbarui user. Id tidak ditemukan');
     }
   }
 }

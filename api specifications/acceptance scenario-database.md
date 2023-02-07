@@ -163,7 +163,7 @@ Sql:
 SELECT * FROM users WHERE id = id
 ```
 
-#### 7. updateUser({id, fullname, statusKehadiran, gologan, nip, nidn, jabatanFungsional, jabatanStruktural})
+#### 7. updateUser(id, {fullname, statusKehadiran, gologan, nip, nidn, jabatanFungsional, jabatanStruktural})
 Fitur: Mendapatkan data seorang pengguna
 
 Deskripsi: Melakukan proses update/ubah data user berdasarkan id.
@@ -179,15 +179,17 @@ Payload:
 - jabatanStruktural (string)
 
 Skenario test:
-- Ketika berhasil memasukan data
-	- Mengembalikan id
+- Ketika berhasil mengubah data
+	- Tidak mengembalikan ```NotFoundError```
+- Ketika gagal mengubah data
+	- Mengembalikan ```NotFoundError```
 
 Sql:
 ```sql
 UPDATE users 
 SET fullname = 'fullname', 
 	statusKehadiran = 'statusKehadiran', 
-	gologan = 'gologan', 
+	golongan = 'golongan', 
 	nip = 'nip', 
 	nidn = 'nidn', 
 	jabatanFungsional = 'jabatanFungsional',
