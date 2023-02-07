@@ -1,7 +1,7 @@
 ﻿# Acceptance Scenario-Database
 
 ## Token Storage
-#### 1. addToken({refreshToken})
+#### ✅ 1. addToken(token)
 Fitur: Tambah token
 
 Deskripsi: Melakukan proses penambahan refreshToken ke dalam database
@@ -15,28 +15,28 @@ INSERT INTO authentications VALUES(refreshToken)
 ```
 
 
-#### 2. checkAvailabilityToken({refreshToken})
+#### ✅ 2. checkAvailabilityToken(token)
 
 Fitur: Cek ketersediaan token
 
-Deskripsi: Melakukan proses pengecekan apakah token telah tersimpan di dalam database
+Deskripsi: Melakukan proses pengecekan apakah refreshtoken telah tersimpan di dalam database
 
 Payload:
 - refreshToken (String)
 
 Skenario test:
-- Ketika token tidak ada
-	- Mengembalikan ```InvariantError```
+- ~~Ketika token tidak ada~~
+	- ~~Mengembalikan ```InvariantError```~~
 
 sql:
 ```sql
 SELECT * FROM authentications WHERE token = refreshToken
 ```
 
-#### 3. deleteToken({refreshToken})
+#### ✅ 3. deleteToken(token)
 Fitur: Hapus token
 
-Deskripsi: Melakukan proses penghapusan token dari database
+Deskripsi: Melakukan proses penghapusan refreshtoken dari database
 
 Payload:
 - refreshToken (String)
