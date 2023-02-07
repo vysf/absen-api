@@ -80,6 +80,7 @@ class UserRepositoryPostgres extends UserRepository {
 
     const result = await this._pool.query(query);
 
+    // harus diganti pakai entities
     return result.rows.map((user) => {
       const {
         password, created_at,
@@ -96,6 +97,33 @@ class UserRepositoryPostgres extends UserRepository {
         ...restData,
       };
     });
+  }
+
+  async getUsersById(id) {
+    const query = {
+      text: 'SELECT * FROM users WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    // ganti jadi entities
+    const {
+      updated_at: updatedAt, created_at: createdAt,
+      jabatan_fungsional: jabatanFungsional,
+      jabatan_struktural: jabatanStruktural,
+      status_kehadiran: statusKehadiran,
+      password, ...restData
+    } = result.rows[0];
+
+    return {
+      updatedAt,
+      createdAt,
+      jabatanFungsional,
+      jabatanStruktural,
+      statusKehadiran,
+      ...restData,
+    };
   }
 }
 

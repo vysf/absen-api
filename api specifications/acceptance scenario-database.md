@@ -127,7 +127,7 @@ Sql:
 SELECT * FROM users WHERE role = 'dosen'
 ```
 
-#### 5. getUsersById({id})
+#### ✅ 5. getUsersById({id})
 Fitur: Mendapatkan data seorang pengguna
 
 Deskripsi: Melakukan proses pengambilan data pengguna menggunakan id
@@ -136,16 +136,16 @@ Payload:
 - id (String)
 
 Skenario test:
-- Ketika id ada
-	- Mengembalikan data pengguna
+- ~~Ketika id ada~~
+	- ~~Mengembalikan data pengguna~~
 
 Sql:
 ```sql
 SELECT * FROM users WHERE id = id
 ```
 
-#### 6. checkAvailabilityUser({id})
-Fitur: Mendapatkan data seorang pengguna
+#### 6. checkUserIsExist(id)
+Fitur: Mengecek data seorang pengguna ada/tidak didalam database
 
 Deskripsi: Melakukan proses pengecekan ada/tidak data pengguna menggunakan id. mirip getUsersById({id}), hanya beda pada pengembalian data.
 

@@ -188,20 +188,13 @@ describe('UserRepositoryPostgres', () => {
       expect(users).toEqual(expectedUsersList);
     });
 
-    it('should return list of users correctly', async () => {
+    it('should return list of users correctly even with null value', async () => {
       // Arrange
       const expectedUsersList = [
         {
           id: 'dosen-1',
           fullname: 'dosen 1',
           username: 'dosen1',
-          statusKehadiran: 'hadir',
-          golongan: '4A',
-          nip: '1999150320241503',
-          nidn: '20241503',
-          jabatanFungsional: 'Pranata 1',
-          jabatanStruktural: 'Lektor',
-          pangkat: 'Penata',
           role: 'dosen',
           updatedAt: '2023-02-07T04:53:09.010Z',
           createdAt: '2023-02-07T04:53:09.010Z',
@@ -242,6 +235,16 @@ describe('UserRepositoryPostgres', () => {
       await UsersTableTestHelper.addUser({ ...expectedUsersList[1], password: 'user1' });
       await UsersTableTestHelper.addUser({ ...expectedUsersList[2], password: 'user2' });
 
+      expectedUsersList[0] = {
+        statusKehadiran: null,
+        golongan: null,
+        nip: null,
+        nidn: null,
+        jabatanFungsional: null,
+        jabatanStruktural: null,
+        pangkat: null,
+        ...expectedUsersList[0],
+      };
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
       // Action
@@ -262,6 +265,41 @@ describe('UserRepositoryPostgres', () => {
       // Assert
       // console.log(users);
       expect(users).toEqual([]);
+    });
+  });
+
+  describe('getUsersById', () => {
+    it('should return user deatil by id', async () => {
+      // Arrange
+      const id = 'user-098';
+      await UsersTableTestHelper.addUser({
+        id,
+        username: 'dosenhebat',
+        fullname: 'dosen 1',
+        password: 'secret',
+      });
+
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      // Action
+      const user = await userRepositoryPostgres.getUsersById(id);
+
+      // Assert
+      expect(user).toEqual({
+        id,
+        username: 'dosenhebat',
+        fullname: 'dosen 1',
+        role: 'dosen',
+        updatedAt: '2023-02-07T04:53:09.010Z',
+        createdAt: '2023-02-07T04:53:09.010Z',
+        statusKehadiran: null,
+        golongan: null,
+        nip: null,
+        nidn: null,
+        jabatanFungsional: null,
+        jabatanStruktural: null,
+        pangkat: null,
+      });
     });
   });
 });

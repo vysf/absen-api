@@ -20,6 +20,10 @@ class UserRepository {
   async getUsers(role) {
     throw new Error('USER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
+
+  async getUsersById(role) {
+    throw new Error('USER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+  }
 }
 
 module.exports = UserRepository;
