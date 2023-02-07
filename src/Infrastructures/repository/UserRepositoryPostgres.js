@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const InvariantError = require('../../Commons/exceptions/InvariantError');
 const RegisteredUser = require('../../Domains/users/entities/RegisteredUser');
 const UserRepository = require('../../Domains/users/UserRepository');
@@ -69,6 +70,32 @@ class UserRepositoryPostgres extends UserRepository {
     const { id } = result.rows[0];
 
     return id;
+  }
+
+  async getUsers(role) {
+    const query = {
+      text: 'SELECT * FROM users WHERE role = $1',
+      values: [role],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows.map((user) => {
+      const {
+        password, created_at,
+        updated_at, jabatan_fungsional,
+        jabatan_struktural, status_kehadiran,
+        ...restData
+      } = user;
+      return {
+        createdAt: user.created_at,
+        updatedAt: user.updated_at,
+        jabatanFungsional: user.jabatan_fungsional,
+        jabatanStruktural: user.jabatan_struktural,
+        statusKehadiran: user.status_kehadiran,
+        ...restData,
+      };
+    });
   }
 }
 

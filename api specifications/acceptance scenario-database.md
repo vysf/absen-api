@@ -47,24 +47,26 @@ DELETE FROM authentications WHERE token = refershToken
 ```
 
 ## User Storage
-#### 1. checkAvailablityUsername({username})
+#### ✅ 1. verifyAvailableUsername(username)
 Fitur: cek ketersediaan username
 
 Deskripsi: Melakukan proses cek username. apabila username sudah terdaftar akan mengembalikan true
 
 Payload:
-- username(String)
+- username (String)
 
 Skenario test:
-- Ketika username tidak tersedia
-	- Mengembalikan nilai ```InvariantError```
+- ~~Ketika username tidak tersedia~~
+	- ~~Mengembalikan nilai ```InvariantError```~~
+- ~~Ketika username tersedia~~
+	- ~~Maka tidak mengembalikan error~~
 
 Sql:
 ```sql
 SELECT username FROM users WHERE username = username
 ```
 
-#### 2. addUser({fullname, username, password})
+#### ✅ 2. addUser({fullname, username, password})
 Fitur: Tambah pengguna
 
 Deskripsi: Melakukan proses tambah/registrasi pengguna. mengembalikan id
@@ -75,15 +77,19 @@ Payload:
 - password (String)
 
 Skenario test:
-- Ketika berhasil menambah user
-	- Mengembalikan nilai id, fullname, dan username
+- ~~Ketika berhasil menambah user~~
+	- ~~Mengembalikan nilai id, fullname, dan username~~
 
 Sql:
 ```sql
 INSERT INTO users VALUES('user-123', 'Jhon Doe', 'jhondoe', 'ok9012jiis') RETURNUNG id, fullname, username
 ```
 
-#### 3. getPasswordByUsername({username})
+catatn sisi sistem:
+- role default adalah ```dosen```
+- createdAt dan updatedAt otomatis ditambahkan juga ke dalam database
+
+#### ✅ 3. getPasswordByUsername(username)
 Fitur: Mendapatkan password berdasarkan username
 
 Deskripsi: Melakukan proses pengambilan password pengguna menggunakan username. mengembalikan password dari database.
@@ -92,21 +98,29 @@ Payload:
 - username (String)
 
 Skenario test:
-- Ketika password tidak ada
-	- Mengembalikan ```InvariantError```
+- ~~Ketika password tidak ada~~
+	- ~~Mengembalikan ```InvariantError```~~
+- ~~Ketika password ada~~
+	- ~~Tidak mengembalikan ```InvariantError```~~
 
 Sql:
 ```sql
 SELECT password FROM users WHERE username = username
 ```
 
-#### 4. getUsers()
+#### ✅ 4. getUsers(role)
 Fitur: Mendapatkan daftar pengguna
 
 Deskripsi: Melakukan proses pengambilan daftar data pengguna khusus role ```dosen```
 
 Payload:
-- none
+- role (String)
+
+Skenario test:
+- ~~Ketika ada daftar user~~
+	- ~~Maka kembalikan daftar user hanya role ```dosen```~~
+- ~~Ketika tidak ada data~~
+	- ~~Maka Kembalikan daftar kosong~~
 
 Sql:
 ```sql

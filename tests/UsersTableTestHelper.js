@@ -8,12 +8,28 @@ const UsersTableTestHelper = {
     password = 'secret',
     fullname = 'Dicoding Indonesia',
     role = 'dosen',
-    createdAt = new Date().toISOString(),
-    updatedAt = new Date().toISOString(),
+    createdAt = '2023-02-07T04:53:09.010Z',
+    updatedAt = '2023-02-07T04:53:09.010Z',
+    golongan = '4A',
+    nip = '1999150320241503',
+    nidn = '20241503',
+    pangakat = 'Penata',
+    jabatanStruktural = 'Lektor',
+    jabatanFungsional = 'Pranata 1',
+    statusKehadiran = 'hadir',
   }) {
     const query = {
-      text: 'INSERT INTO users VALUES($1, $2, $3, $4, $5, $6, $7)',
-      values: [id, username, password, fullname, role, createdAt, updatedAt],
+      text: 'INSERT INTO users VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)',
+      values: [
+        id, username,
+        password, fullname,
+        role, createdAt,
+        updatedAt, golongan,
+        nip, nidn, pangakat,
+        jabatanStruktural,
+        jabatanFungsional,
+        statusKehadiran,
+      ],
     };
 
     await pool.query(query);

@@ -122,4 +122,146 @@ describe('UserRepositoryPostgres', () => {
       expect(userId).toEqual('user-321');
     });
   });
+
+  describe('getUsers', () => {
+    it('should return list of users correctly', async () => {
+      // Arrange
+      const expectedUsersList = [
+        {
+          id: 'dosen-1',
+          fullname: 'dosen 1',
+          username: 'dosen1',
+          statusKehadiran: 'hadir',
+          golongan: '4A',
+          nip: '1999150320241503',
+          nidn: '20241503',
+          jabatanFungsional: 'Pranata 1',
+          jabatanStruktural: 'Lektor',
+          pangkat: 'Penata',
+          role: 'dosen',
+          updatedAt: '2023-02-07T04:53:09.010Z',
+          createdAt: '2023-02-07T04:53:09.010Z',
+        },
+        {
+          id: 'dosen-2',
+          fullname: 'dosen 2',
+          username: 'dosen2',
+          statusKehadiran: 'hadir',
+          golongan: '4A',
+          nip: '1999150320241503',
+          nidn: '20241503',
+          jabatanFungsional: 'Pranata 1',
+          jabatanStruktural: 'Lektor',
+          pangkat: 'Penata',
+          role: 'dosen',
+          updatedAt: '2023-02-07T04:53:09.010Z',
+          createdAt: '2023-02-07T04:53:09.010Z',
+        },
+        {
+          id: 'dosen-3',
+          fullname: 'dosen 3',
+          username: 'dosen3',
+          statusKehadiran: 'hadir',
+          golongan: '4A',
+          nip: '1999150320241503',
+          nidn: '20241503',
+          jabatanFungsional: 'Pranata 1',
+          jabatanStruktural: 'Lektor',
+          pangkat: 'Penata',
+          role: 'dosen',
+          updatedAt: '2023-02-07T04:53:09.010Z',
+          createdAt: '2023-02-07T04:53:09.010Z',
+        },
+      ];
+
+      await UsersTableTestHelper.addUser({ ...expectedUsersList[0], password: 'user1' });
+      await UsersTableTestHelper.addUser({ ...expectedUsersList[1], password: 'user1' });
+      await UsersTableTestHelper.addUser({ ...expectedUsersList[2], password: 'user2' });
+
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      // Action
+      const users = await userRepositoryPostgres.getUsers('dosen');
+
+      // Assert
+      // console.log(users);
+      expect(users).toEqual(expectedUsersList);
+    });
+
+    it('should return list of users correctly', async () => {
+      // Arrange
+      const expectedUsersList = [
+        {
+          id: 'dosen-1',
+          fullname: 'dosen 1',
+          username: 'dosen1',
+          statusKehadiran: 'hadir',
+          golongan: '4A',
+          nip: '1999150320241503',
+          nidn: '20241503',
+          jabatanFungsional: 'Pranata 1',
+          jabatanStruktural: 'Lektor',
+          pangkat: 'Penata',
+          role: 'dosen',
+          updatedAt: '2023-02-07T04:53:09.010Z',
+          createdAt: '2023-02-07T04:53:09.010Z',
+        },
+        {
+          id: 'dosen-2',
+          fullname: 'dosen 2',
+          username: 'dosen2',
+          statusKehadiran: 'hadir',
+          golongan: '4A',
+          nip: '1999150320241503',
+          nidn: '20241503',
+          jabatanFungsional: 'Pranata 1',
+          jabatanStruktural: 'Lektor',
+          pangkat: 'Penata',
+          role: 'dosen',
+          updatedAt: '2023-02-07T04:53:09.010Z',
+          createdAt: '2023-02-07T04:53:09.010Z',
+        },
+        {
+          id: 'dosen-3',
+          fullname: 'dosen 3',
+          username: 'dosen3',
+          statusKehadiran: 'hadir',
+          golongan: '4A',
+          nip: '1999150320241503',
+          nidn: '20241503',
+          jabatanFungsional: 'Pranata 1',
+          jabatanStruktural: 'Lektor',
+          pangkat: 'Penata',
+          role: 'dosen',
+          updatedAt: '2023-02-07T04:53:09.010Z',
+          createdAt: '2023-02-07T04:53:09.010Z',
+        },
+      ];
+
+      await UsersTableTestHelper.addUser({ ...expectedUsersList[0], password: 'user1' });
+      await UsersTableTestHelper.addUser({ ...expectedUsersList[1], password: 'user1' });
+      await UsersTableTestHelper.addUser({ ...expectedUsersList[2], password: 'user2' });
+
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      // Action
+      const users = await userRepositoryPostgres.getUsers('dosen');
+
+      // Assert
+      // console.log(users);
+      expect(users).toEqual(expectedUsersList);
+    });
+
+    it('should return empty list of users', async () => {
+      // Arrange
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      // Action
+      const users = await userRepositoryPostgres.getUsers('dosen');
+
+      // Assert
+      // console.log(users);
+      expect(users).toEqual([]);
+    });
+  });
 });
