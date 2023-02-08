@@ -225,7 +225,7 @@ Skenario test:
 - ~~Ketika gagal menghapus data~~
 	- ~~Mengembalikan ```NotFoundError```~~
 
-#### 9. updateUserPasswordById({id, password})
+#### ✅ 9. updateUserPasswordById({id, password})
 Fitur: Mendapatkan data seorang pengguna
 
 Deskripsi: Melakukan proses update/ubah data user berdasarkan id.
@@ -235,8 +235,10 @@ Payload:
 - password (string)
 
 Skenario test:
-- Ketika berhasil memasukan data
-	- Mengembalikan id
+- ~~Ketika berhasil menghapus data~~
+	- ~~Tidak mengembalikan ```NotFoundError```~~
+- ~~Ketika gagal menghapus data~~
+	- ~~Mengembalikan ```NotFoundError```~~
 
 Sql:
 ```sql

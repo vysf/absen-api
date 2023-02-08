@@ -189,6 +189,19 @@ class UserRepositoryPostgres extends UserRepository {
       throw new NotFoundError('User tidak ditemukan');
     }
   }
+
+  async updateUserPasswordById(id, password) {
+    const query = {
+      text: 'UPDATE users SET password = $1 WHERE id = $2',
+      values: [password, id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('User tidak ditemukan');
+    }
+  }
 }
 
 module.exports = UserRepositoryPostgres;

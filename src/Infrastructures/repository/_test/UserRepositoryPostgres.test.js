@@ -402,4 +402,35 @@ describe('UserRepositoryPostgres', () => {
       expect(user[0].is_delete).toEqual(true);
     });
   });
+
+  describe('updateUserPasswordById', () => {
+    it('should throw NotFoundError when user does not exist', async () => {
+      // Arrange
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(userRepositoryPostgres.updateUserPasswordById('xxx', ''))
+        .rejects.toThrow(NotFoundError);
+    });
+
+    it('should update user\'s password correctly', async () => {
+      // Arrange
+      const id = 'user-120';
+      const password = 'secret';
+      const changePassword = 'secret1';
+
+      await UsersTableTestHelper.addUser({
+        id,
+        username: 'dosen1',
+        fullname: 'dosen 1',
+        password,
+      });
+
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(userRepositoryPostgres.updateUserPasswordById(id, changePassword))
+        .resolves.not.toThrow(NotFoundError);
+    });
+  });
 });
