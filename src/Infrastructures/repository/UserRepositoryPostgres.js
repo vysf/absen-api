@@ -75,7 +75,7 @@ class UserRepositoryPostgres extends UserRepository {
 
   async getUsers(role) {
     const query = {
-      text: 'SELECT * FROM users WHERE role = $1',
+      text: 'SELECT * FROM users WHERE role = $1 AND is_delete = FALSE',
       values: [role],
     };
 
@@ -87,7 +87,7 @@ class UserRepositoryPostgres extends UserRepository {
         password, created_at,
         updated_at, jabatan_fungsional,
         jabatan_struktural, status_kehadiran,
-        ...restData
+        is_delete, ...restData
       } = user;
       return {
         createdAt: user.created_at,
@@ -114,7 +114,7 @@ class UserRepositoryPostgres extends UserRepository {
       jabatan_fungsional: jabatanFungsional,
       jabatan_struktural: jabatanStruktural,
       status_kehadiran: statusKehadiran,
-      password, ...restData
+      is_delete, password, ...restData
     } = result.rows[0];
 
     return {
@@ -174,6 +174,19 @@ class UserRepositoryPostgres extends UserRepository {
 
     if (!result.rowCount) {
       throw new NotFoundError('Gagal memperbarui user. Id tidak ditemukan');
+    }
+  }
+
+  async deleteUserById(id) {
+    const query = {
+      text: 'UPDATE users SET is_delete = TRUE WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('User tidak ditemukan');
     }
   }
 }

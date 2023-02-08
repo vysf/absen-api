@@ -370,4 +370,36 @@ describe('UserRepositoryPostgres', () => {
         .rejects.toThrow(NotFoundError);
     });
   });
+
+  describe('deleteUserById', () => {
+    it('should throw NotFoundError when user that want to delete is not exist', async () => {
+      // Arrange
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(userRepositoryPostgres.deleteUserById('xxx'))
+        .rejects.toThrow(NotFoundError);
+    });
+
+    it('should be able to delete user', async () => {
+      // Arrange
+      const id = 'user-120';
+
+      await UsersTableTestHelper.addUser({
+        id,
+        username: 'dosen1',
+        fullname: 'dosen 1',
+        password: 'secret',
+      });
+
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      // Action
+      await userRepositoryPostgres.deleteUserById(id);
+      const user = await UsersTableTestHelper.findUsersById(id);
+
+      // Assert
+      expect(user[0].is_delete).toEqual(true);
+    });
+  });
 });

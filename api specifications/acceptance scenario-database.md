@@ -197,7 +197,7 @@ SET fullname = 'fullname',
 WHERE id = 'id'
 ```
 
-#### 8. deleteUserById({id})
+#### ✅ 8. deleteUserById(id)
 Fitur: Mendapatkan data seorang pengguna
 
 Deskripsi: Melakukan proses hapus user berdasarkan id. belum diputuskan untuk _soft delete_ atau _hard delete_
@@ -217,6 +217,12 @@ UPDATE users
 SET is_delete = TRUE
 WHERE id = 'id'
 ```
+
+Skenario test:
+- ~~Ketika berhasil menghapus data~~
+	- ~~Tidak mengembalikan ```NotFoundError```~~
+- ~~Ketika gagal menghapus data~~
+	- ~~Mengembalikan ```NotFoundError```~~
 
 #### 9. updateUserPasswordById({id, password})
 Fitur: Mendapatkan data seorang pengguna
