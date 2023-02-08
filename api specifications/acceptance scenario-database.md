@@ -200,13 +200,14 @@ WHERE id = 'id'
 #### ✅ 8. deleteUserById(id)
 Fitur: Mendapatkan data seorang pengguna
 
-Deskripsi: Melakukan proses hapus user berdasarkan id. belum diputuskan untuk _soft delete_ atau _hard delete_
+Deskripsi: Melakukan proses hapus user berdasarkan id. ~~belum diputuskan untuk _soft delete_ atau _hard delete_~~
+menggunakan _soft delete_
 
 Payload:
 - id (String)
 
 sql: 
-opsi _hard delete_
+~~opsi _hard delete_~~
 ```sql
 DELETE FROM users WHERE id = 'id'
 ```
