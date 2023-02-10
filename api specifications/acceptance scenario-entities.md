@@ -25,15 +25,15 @@ Skenario test:
 - ~~Ketika payload tidak sesuai tipe data~~
 	- ~~Maka ```Error(REGISTERED_USER.NOT_MEET_DATA_TYPE_SPECIFICATION)```~~
 
-### 3. ```NewAuth(payload)```
+### ✅ 3. ```NewAuth(payload)```
 ```javascript
  NewAuth({ accessToken, refreshToken })
 ```
 Skenario test:
-- Ketika payload tidak lengkap
-	- Maka ```Error(NEW_AUTH.NOT_CONTAIN_NEEDE_PROPERTY)```
-- Ketika payload tidak sesuai tipe data
-	- Maka ```Error(NEW_AUTH.NOT_MEET_DATA_TYPE_SPECIFICATION)```
+- ~~Ketika payload tidak lengkap~~
+	- ~~Maka ```Error(NEW_AUTH.NOT_CONTAIN_NEEDE_PROPERTY)```~~
+- ~~Ketika payload tidak sesuai tipe data~~
+	- ~~Maka ```Error(NEW_AUTH.NOT_MEET_DATA_TYPE_SPECIFICATION)```~~
 
 ### ✅ 4. ```UserLogin(payload)```
 ```javascript
