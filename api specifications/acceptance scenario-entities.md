@@ -15,15 +15,15 @@ Skenario test:
 - ~~Ketika username mengandung spasi~~
 	- ~~Maka ```Error(REGISTER_USER.USERNAME_CONTAIN_RESTRICTED_CHARACTER)```~~
 
-### 2. ```RegisteredUser(payload)```
+### ✅ 2. ```RegisteredUser(payload)```
 ```javascript
 RegisteredUser({ id, fullname, username })
 ```
 Skenario test:
-- Ketika payload tidak lengkap
-	- Maka ```Error(REGISTERED_USER.NOT_CONTAIN_NEEDE_PROPERTY)```
-- Ketika payload tidak sesuai tipe data
-	- Maka ```Error(REGISTERED_USER.NOT_MEET_DATA_TYPE_SPECIFICATION)```
+- ~~Ketika payload tidak lengkap~~
+	- ~~Maka ```Error(REGISTERED_USER.NOT_CONTAIN_NEEDE_PROPERTY)```~~
+- ~~Ketika payload tidak sesuai tipe data~~
+	- ~~Maka ```Error(REGISTERED_USER.NOT_MEET_DATA_TYPE_SPECIFICATION)```~~
 
 ### 3. ```NewAuth(payload)```
 ```javascript
