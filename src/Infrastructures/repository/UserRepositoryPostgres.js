@@ -87,7 +87,7 @@ class UserRepositoryPostgres extends UserRepository {
         password, created_at,
         updated_at, jabatan_fungsional,
         jabatan_struktural, status_kehadiran,
-        is_delete, ...restData
+        photo_url, is_delete, ...restData
       } = user;
       return {
         createdAt: user.created_at,
@@ -95,6 +95,7 @@ class UserRepositoryPostgres extends UserRepository {
         jabatanFungsional: user.jabatan_fungsional,
         jabatanStruktural: user.jabatan_struktural,
         statusKehadiran: user.status_kehadiran,
+        photoUrl: user.photo_url,
         ...restData,
       };
     });
@@ -114,7 +115,9 @@ class UserRepositoryPostgres extends UserRepository {
       jabatan_fungsional: jabatanFungsional,
       jabatan_struktural: jabatanStruktural,
       status_kehadiran: statusKehadiran,
-      is_delete, password, ...restData
+      photo_url: photoUrl,
+      is_delete, password,
+      ...restData
     } = result.rows[0];
 
     return {
@@ -123,6 +126,7 @@ class UserRepositoryPostgres extends UserRepository {
       jabatanFungsional,
       jabatanStruktural,
       statusKehadiran,
+      photoUrl,
       ...restData,
     };
   }
@@ -194,6 +198,19 @@ class UserRepositoryPostgres extends UserRepository {
     const query = {
       text: 'UPDATE users SET password = $1 WHERE id = $2',
       values: [password, id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('User tidak ditemukan');
+    }
+  }
+
+  async addPhotoProfile(id, photoUrl) {
+    const query = {
+      text: 'UPDATE users SET photo_url = $1 WHERE id = $2',
+      values: [photoUrl, id],
     };
 
     const result = await this._pool.query(query);

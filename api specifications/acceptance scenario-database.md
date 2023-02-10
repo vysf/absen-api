@@ -248,7 +248,7 @@ WHERE id = 'id'
 ```
 
 ## Upload Storage
-#### 1. updatePhotobyId({id, photo})
+#### ✅ 1. addPhotoProfile({id, photo})
 Fitur: Mendapatkan data seorang pengguna
 
 Deskripsi: Melakukan proses update/ubah foto user berdasarkan id.
@@ -256,6 +256,12 @@ Deskripsi: Melakukan proses update/ubah foto user berdasarkan id.
 Payload:
 - id (String)
 - foto (File)
+
+Skenario test:
+- ~~Ketika berhasil mengubah foto profile~~
+	- ~~Tidak mengembalikan ```NotFoundError```~~
+- ~~Ketika gagal mengubah foto profil~~
+	- ~~Mengembalikan ```NotFoundError```~~
 
 ```sql
 UPDATE users

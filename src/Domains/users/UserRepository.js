@@ -37,7 +37,11 @@ class UserRepository {
     throw new Error('USER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
 
-  async updateUserPasswordById(i, passwordd) {
+  async updateUserPasswordById(id, passwordd) {
+    throw new Error('USER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+  }
+
+  async addPhotoProfile(id, photoUrl) {
     throw new Error('USER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
 }

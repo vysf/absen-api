@@ -137,6 +137,7 @@ describe('UserRepositoryPostgres', () => {
           golongan: '4A',
           nip: '1999150320241503',
           nidn: '20241503',
+          photoUrl: 'image.png',
           jabatanFungsional: 'Pranata 1',
           jabatanStruktural: 'Lektor',
           pangkat: 'Penata',
@@ -152,6 +153,7 @@ describe('UserRepositoryPostgres', () => {
           golongan: '4A',
           nip: '1999150320241503',
           nidn: '20241503',
+          photoUrl: 'image.png',
           jabatanFungsional: 'Pranata 1',
           jabatanStruktural: 'Lektor',
           pangkat: 'Penata',
@@ -167,6 +169,7 @@ describe('UserRepositoryPostgres', () => {
           golongan: '4A',
           nip: '1999150320241503',
           nidn: '20241503',
+          photoUrl: 'image.png',
           jabatanFungsional: 'Pranata 1',
           jabatanStruktural: 'Lektor',
           pangkat: 'Penata',
@@ -215,6 +218,7 @@ describe('UserRepositoryPostgres', () => {
           role: 'dosen',
           updatedAt: '2023-02-07T04:53:09.010Z',
           createdAt: '2023-02-07T04:53:09.010Z',
+          photoUrl: 'http://localhost:5000/upload/images/photo.jpg',
         },
         {
           id: 'dosen-3',
@@ -230,6 +234,7 @@ describe('UserRepositoryPostgres', () => {
           role: 'dosen',
           updatedAt: '2023-02-07T04:53:09.010Z',
           createdAt: '2023-02-07T04:53:09.010Z',
+          photoUrl: 'http://localhost:5000/upload/images/photo.jpg',
         },
       ];
 
@@ -245,6 +250,7 @@ describe('UserRepositoryPostgres', () => {
         jabatanFungsional: null,
         jabatanStruktural: null,
         pangkat: null,
+        photoUrl: null,
         ...expectedUsersList[0],
       };
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
@@ -301,6 +307,7 @@ describe('UserRepositoryPostgres', () => {
         jabatanFungsional: null,
         jabatanStruktural: null,
         pangkat: null,
+        photoUrl: null,
       });
     });
   });
@@ -431,6 +438,36 @@ describe('UserRepositoryPostgres', () => {
       // Action & Assert
       await expect(userRepositoryPostgres.updateUserPasswordById(id, changePassword))
         .resolves.not.toThrow(NotFoundError);
+    });
+  });
+
+  describe('addPhotoProfile', () => {
+    it('should add photo profile correclty', async () => {
+      // Arrange
+      const id = 'user-1';
+      const photoUrl = 'http://localhost:5000/upload/images/photo.jpg';
+      await UsersTableTestHelper.addUser({
+        id, photoUrl,
+      });
+
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      // Action
+      const photo = await UsersTableTestHelper.findUsersById(id);
+
+      // Assert
+      await expect(userRepositoryPostgres.addPhotoProfile(id, photoUrl))
+        .resolves.not.toThrow(NotFoundError);
+      expect(photo[0].photo_url).toEqual(photoUrl);
+    });
+
+    it('should throw NotFoundError if user that want to update phto profile does not exist', async () => {
+      // Arrange
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(userRepositoryPostgres.addPhotoProfile('xxx', 'photoUrl.img'))
+        .rejects.toThrow(NotFoundError);
     });
   });
 });
