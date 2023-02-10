@@ -27,7 +27,7 @@ Skenario test:
 
 ### 3. ```NewAuth(payload)```
 ```javascript
- NewAuth({ username, password })
+ NewAuth({ accessToken, refreshToken })
 ```
 Skenario test:
 - Ketika payload tidak lengkap
@@ -35,7 +35,17 @@ Skenario test:
 - Ketika payload tidak sesuai tipe data
 	- Maka ```Error(NEW_AUTH.NOT_MEET_DATA_TYPE_SPECIFICATION)```
 
-### 4. ```DetailUser(payload)```
+### ✅ 4. ```UserLogin(payload)```
+```javascript
+ NewAuth({ username, password })
+```
+Skenario test:
+- ~~Ketika payload tidak lengkap~~
+	- ~~Maka ```Error(USER_LOGIN.NOT_CONTAIN_NEEDE_PROPERTY)```~~
+- ~~Ketika payload tidak sesuai tipe data~~
+	- ~~Maka ```Error(USER_LOGIN.NOT_MEET_DATA_TYPE_SPECIFICATION)```~~
+
+### 5. ```DetailUser(payload)```
 ```javascript
 DetailUser({
 	id,
