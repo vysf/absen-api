@@ -45,41 +45,24 @@ Payload:
  - simpan refreshToken ke database 
  - kirimkan accessToken dan refreshToken
 
-Spesifikasi:
--   Ketika payload kosong
-    -   Mengembalikan error.
--   Ketika payload beda tipe data
-    -   Mengembalikan error
--   Ketika username tidak terdaftar didalam database
-    -   Mengembalikan NotFoundError
-- Ketika password tidak match
-	- Mengembalikan status fail dan kode status 403
-- Buat accessToken dan refreshToken
-	- Mengembalikan  status success, kode 201, dan accessToken dan refreshToken
-
-### 3. Refresh Token
+### ✅ 3. Refresh Token
 Fitur: Refresh token
 
 Deskripsi: Mendapatkan accessToken baru ketika masa akses token telah habis, dengan mengirimkan refreshToken
+
+Dependency:
+- authentication repository
+- authentication token manager
 
 Payload:
 -   refreshToken (String)
 
  Use case:
- - Dapatkan payload.
+ - Dapatkan payload
+ - verifikasi refreshToken
  - cek refreshToken didalam database
  - generate accessToken baru
  - kirimkan accessToken
-
-Spesifikasi:
--   Ketika payload kosong
-    -   Mengembalikan error.
--   Ketika payload beda tipe data
-    -   Mengembalikan error
--   Ketika refreshToken tidak ada didalam database
-    -   Mengembalikan NotFoundError
-- Buat accessToken
-	- Mengembalikan  status success, kode 200, dan accessToken
 
 ### 4. Logout
 Fitur: Logout
