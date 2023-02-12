@@ -29,7 +29,7 @@ class UserRepository {
     throw new Error('USER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
 
-  async updateUser(id, payload) {
+  async updateUser(id, updateUser) {
     throw new Error('USER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
 

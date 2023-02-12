@@ -127,15 +127,11 @@ class UserRepositoryPostgres extends UserRepository {
 
   async updateUser(id, updateUser) {
     const {
-      fullname,
-      golongan,
-      nip,
-      nidn,
-      pangkat,
-      jabatanStruktural,
-      jabatanFungsional,
-      statusKehadiran,
+      fullname, golongan, nip,
+      nidn, pangkat, jabatanStruktural,
+      jabatanFungsional, statusKehadiran,
     } = updateUser;
+
     const query = {
       text: `UPDATE users 
       SET fullname = $1, 
