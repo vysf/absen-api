@@ -33,7 +33,7 @@ describe('GetUserUseCase', () => {
       id: 'user-123',
     };
 
-    const user = new UserDetail({
+    const expectedUser = new UserDetail({
       id: useCasePayload.id,
       username: 'dosenhebat',
       fullname: 'dosen 1',
@@ -53,16 +53,17 @@ describe('GetUserUseCase', () => {
     const mockUserRepository = new UserRepository();
 
     mockUserRepository.getUserById = jest.fn()
-      .mockImplementation(() => Promise.resolve(user));
+      .mockImplementation(() => Promise.resolve(expectedUser));
 
     const getUserUseCase = new GetUserUseCase({
       userRepository: mockUserRepository,
     });
 
     // Action
-    await getUserUseCase.execute(useCasePayload);
+    const user = await getUserUseCase.execute(useCasePayload);
 
     // Assert
+    expect(user).toStrictEqual(expectedUser);
     expect(mockUserRepository.getUserById).toHaveBeenCalledWith(useCasePayload.id);
   });
 });
