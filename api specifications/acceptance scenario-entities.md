@@ -45,7 +45,7 @@ Skenario test:
 - ~~Ketika payload tidak sesuai tipe data~~
 	- ~~Maka ```Error(USER_LOGIN.NOT_MEET_DATA_TYPE_SPECIFICATION)```~~
 
-### 5. ```DetailUser(payload)```
+### ✅ 5. ```DetailUser(payload)```
 ```javascript
 DetailUser({
 	id,
@@ -61,7 +61,7 @@ DetailUser({
 })
 ```
 Skenario test:
-- Ketika payload tidak lengkap
-	- Maka ```Error(DETAIL_USER.NOT_CONTAIN_NEEDE_PROPERTY)```
-- Ketika payload tidak sesuai tipe data
-	- Maka ```Error(DETAIL_USER.NOT_MEET_DATA_TYPE_SPECIFICATION)```
+- ~~Ketika payload tidak lengkap~~
+	- ~~Maka ```Error(DETAIL_USER.NOT_CONTAIN_NEEDE_PROPERTY)```~~
+- ~~Ketika payload tidak sesuai tipe data~~
+	- ~~Maka ```Error(DETAIL_USER.NOT_MEET_DATA_TYPE_SPECIFICATION)```~~

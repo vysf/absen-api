@@ -2,6 +2,7 @@
 const InvariantError = require('../../Commons/exceptions/InvariantError');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
 const RegisteredUser = require('../../Domains/users/entities/RegisteredUser');
+const UserDetail = require('../../Domains/users/entities/UserDetail');
 const UserRepository = require('../../Domains/users/UserRepository');
 
 class UserRepositoryPostgres extends UserRepository {
@@ -81,24 +82,15 @@ class UserRepositoryPostgres extends UserRepository {
 
     const result = await this._pool.query(query);
 
-    // harus diganti pakai entities
-    return result.rows.map((user) => {
-      const {
-        password, created_at,
-        updated_at, jabatan_fungsional,
-        jabatan_struktural, status_kehadiran,
-        photo_url, is_delete, ...restData
-      } = user;
-      return {
-        createdAt: user.created_at,
-        updatedAt: user.updated_at,
-        jabatanFungsional: user.jabatan_fungsional,
-        jabatanStruktural: user.jabatan_struktural,
-        statusKehadiran: user.status_kehadiran,
-        photoUrl: user.photo_url,
-        ...restData,
-      };
-    });
+    return result.rows.map((user) => new UserDetail({
+      createdAt: user.created_at,
+      updatedAt: user.updated_at,
+      jabatanFungsional: user.jabatan_fungsional,
+      jabatanStruktural: user.jabatan_struktural,
+      statusKehadiran: user.status_kehadiran,
+      photoUrl: user.photo_url,
+      ...user,
+    }));
   }
 
   async getUserById(id) {
@@ -109,26 +101,15 @@ class UserRepositoryPostgres extends UserRepository {
 
     const result = await this._pool.query(query);
 
-    // ganti jadi entities
-    const {
-      updated_at: updatedAt, created_at: createdAt,
-      jabatan_fungsional: jabatanFungsional,
-      jabatan_struktural: jabatanStruktural,
-      status_kehadiran: statusKehadiran,
-      photo_url: photoUrl,
-      is_delete, password,
-      ...restData
-    } = result.rows[0];
-
-    return {
-      updatedAt,
-      createdAt,
-      jabatanFungsional,
-      jabatanStruktural,
-      statusKehadiran,
-      photoUrl,
-      ...restData,
-    };
+    return new UserDetail({
+      updatedAt: result.rows[0].updated_at,
+      createdAt: result.rows[0].created_at,
+      jabatanFungsional: result.rows[0].jabatan_fungsional,
+      jabatanStruktural: result.rows[0].jabatan_struktural,
+      statusKehadiran: result.rows[0].status_kehadiran,
+      photoUrl: result.rows[0].photo_url,
+      ...result.rows[0],
+    });
   }
 
   async checkUserIsExist(id) {

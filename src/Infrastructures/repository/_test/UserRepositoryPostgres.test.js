@@ -6,6 +6,7 @@ const pool = require('../../database/postgres/pool');
 const UserRepositoryPostgres = require('../UserRepositoryPostgres');
 
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
+const UserDetail = require('../../../Domains/users/entities/UserDetail');
 
 describe('UserRepositoryPostgres', () => {
   afterEach(async () => {
@@ -291,9 +292,9 @@ describe('UserRepositoryPostgres', () => {
 
       // Action
       const user = await userRepositoryPostgres.getUserById(id);
-
+      // console.log(user)
       // Assert
-      expect(user).toEqual({
+      expect(user).toStrictEqual(new UserDetail({
         id,
         username: 'dosenhebat',
         fullname: 'dosen 1',
@@ -308,7 +309,7 @@ describe('UserRepositoryPostgres', () => {
         jabatanStruktural: null,
         pangkat: null,
         photoUrl: null,
-      });
+      }));
     });
   });
 
@@ -358,14 +359,14 @@ describe('UserRepositoryPostgres', () => {
         statusKehadiran: 'hadir',
       };
 
-      const updatedUserData = { ...userBeforeUpdate, ...dataUpdate };
+      const updatedUserData = new UserDetail({ ...userBeforeUpdate, ...dataUpdate });
 
       // Action
       await userRepositoryPostgres.updateUser(id, updatedUserData);
       const userAfterUpdate = await userRepositoryPostgres.getUserById(id);
 
       // Assert
-      expect(userAfterUpdate).toEqual(updatedUserData);
+      expect(userAfterUpdate).toStrictEqual(updatedUserData);
     });
 
     it('should throw NotFound Error when user not exist', async () => {
