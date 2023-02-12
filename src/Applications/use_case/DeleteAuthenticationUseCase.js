@@ -1,3 +1,5 @@
+/* eslint-disable class-methods-use-this */
+// file ini sama seperti logout use case
 class DeleteAuthenticationUseCase {
   constructor({
     authenticationRepository,
