@@ -98,7 +98,7 @@ Spesifikasi:
 - ~~Ketika payload beda tipe data (opsional)~~
     - ~~Mengembalikan error~~
 
-### 6. Dapatkan Seorang Pengguna (Admin & Public)
+### ✅ 6. Dapatkan Seorang Pengguna (Admin & Public)
 Fitur: Dapatkan SeorangPengguna (Admin & Public)
 
 Deskripsi: Mendapatkan seorang pengguna. Berlaku untuk admin dan public.
@@ -113,14 +113,12 @@ Payload:
  - kirimkan status success dan daftar pengguna
 
 Spesifikasi:
--   Ketika payload kosong (opsional)
-    -   Mengembalikan error.
--   Ketika payload beda tipe data (opsional)
-    -   Mengembalikan error
-- Ketika pengguna tidak ditemukan
-	- Mengembalikan NotFoundError
--   Dapatkan pengguna
-	- Mengembalikan  status success dan kode 200
+- ~~Ketika payload kosong (opsional)~~
+    - ~~Mengembalikan error~~
+- ~~Ketika payload beda tipe data (opsional)~~
+    - ~~Mengembalikan error~~
+- ~~Ketika id ditemukan~~
+	- ~~Mengembalikan pengguna~~
 
 ### 7. Ubah Data Seorang Pengguna (Admin & Dosen)
 Fitur: Ubah Data Seorang Pengguna (Admin & Dosen)
