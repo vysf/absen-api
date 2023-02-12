@@ -21,10 +21,16 @@ Payload:
  - simpan payload ke dalam database
  - kembalikan addedUser dengan kode 201
 
-### 2. Login
+### ✅ 2. Login
 Fitur: Login
 
 Deskripsi: Melakukan verifikasi terhadap pengguna yang terdaftar disistem
+
+Dependency:
+- password hash
+- user repository
+- authentication repository
+- authentication token manager
 
 Payload:
 -   username (String)
@@ -32,11 +38,11 @@ Payload:
 
  Use case:
  - Dapatkan payload.
- - cek username didalam database
  - dapatkan password berdasarkan username
  - compare password payload dengan password dari database
+ - cek username didalam database
  - generate accessToken dan refreshToken dengan id dan role pengguna
- -  simpan refreshToken ke database 
+ - simpan refreshToken ke database 
  - kirimkan accessToken dan refreshToken
 
 Spesifikasi:
