@@ -80,25 +80,23 @@ Payload:
  - cek refreshToken didalam database
  - hapus refreshToken didalam database
 
-### 5. Dapatkan Semua Pengguna (Admin & Public)
+### ✅ 5. Dapatkan Semua Pengguna (Admin & Public)
 Fitur: Dapatkan Semua Pengguna (Admin & Public)
 
 Deskripsi: Mendapatkan semua pengguna dengan role ```dosen```. Berlaku untuk admin dan public.
 
 Payload:
--   header authorization (opsional)
+- header authorization (opsional)
 
  Use case:
  - Dapatkan payload (opsional).
  - kirimkan status success dan daftar pengguna
 
 Spesifikasi:
--   Ketika payload kosong (opsional)
-    -   Mengembalikan error.
--   Ketika payload beda tipe data (opsional)
-    -   Mengembalikan error
--   Dapatkan daftar pengguna
-	- Mengembalikan  status success dan kode 200
+- ~~Ketika payload kosong (opsional)~~
+    - ~~Mengembalikan error~~
+- ~~Ketika payload beda tipe data (opsional)~~
+    - ~~Mengembalikan error~~
 
 ### 6. Dapatkan Seorang Pengguna (Admin & Public)
 Fitur: Dapatkan SeorangPengguna (Admin & Public)

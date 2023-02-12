@@ -131,7 +131,7 @@ describe('UserRepositoryPostgres', () => {
     it('should return list of users correctly', async () => {
       // Arrange
       const expectedUsersList = [
-        {
+        new UserDetail({
           id: 'dosen-1',
           fullname: 'dosen 1',
           username: 'dosen1',
@@ -146,8 +146,8 @@ describe('UserRepositoryPostgres', () => {
           role: 'dosen',
           updatedAt: '2023-02-07T04:53:09.010Z',
           createdAt: '2023-02-07T04:53:09.010Z',
-        },
-        {
+        }),
+        new UserDetail({
           id: 'dosen-2',
           fullname: 'dosen 2',
           username: 'dosen2',
@@ -162,8 +162,8 @@ describe('UserRepositoryPostgres', () => {
           role: 'dosen',
           updatedAt: '2023-02-07T04:53:09.010Z',
           createdAt: '2023-02-07T04:53:09.010Z',
-        },
-        {
+        }),
+        new UserDetail({
           id: 'dosen-3',
           fullname: 'dosen 3',
           username: 'dosen3',
@@ -178,12 +178,12 @@ describe('UserRepositoryPostgres', () => {
           role: 'dosen',
           updatedAt: '2023-02-07T04:53:09.010Z',
           createdAt: '2023-02-07T04:53:09.010Z',
-        },
+        }),
       ];
 
       await UsersTableTestHelper.addUser({ ...expectedUsersList[0], password: 'user1' });
-      await UsersTableTestHelper.addUser({ ...expectedUsersList[1], password: 'user1' });
-      await UsersTableTestHelper.addUser({ ...expectedUsersList[2], password: 'user2' });
+      await UsersTableTestHelper.addUser({ ...expectedUsersList[1], password: 'user2' });
+      await UsersTableTestHelper.addUser({ ...expectedUsersList[2], password: 'user3' });
 
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
@@ -192,7 +192,7 @@ describe('UserRepositoryPostgres', () => {
 
       // Assert
       // console.log(users);
-      expect(users).toEqual(expectedUsersList);
+      expect(users).toStrictEqual(expectedUsersList);
     });
 
     it('should return list of users correctly even with null value', async () => {
