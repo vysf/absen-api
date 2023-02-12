@@ -64,10 +64,13 @@ Payload:
  - generate accessToken baru
  - kirimkan accessToken
 
-### 4. Logout
+### ✅ 4. Logout
 Fitur: Logout
 
 Deskripsi: Mendapatkan accessToken baru ketika masa akses token telah habis, dengan mengirimkan refreshToken
+
+Dependency:
+- authentication repository
 
 Payload:
 -   refreshToken (String)
@@ -76,17 +79,6 @@ Payload:
  - Dapatkan payload
  - cek refreshToken didalam database
  - hapus refreshToken didalam database
- - kirimkan status success
-
-Spesifikasi:
--   Ketika payload kosong
-    -   Mengembalikan error.
--   Ketika payload beda tipe data
-    -   Mengembalikan error
-- Ketika refreshToken tidak ada didalam database
-	- Mengembalikan NotFoundError
--   Hapus refreshToken didalam database
-	- Mengembalikan  status success dan kode 200
 
 ### 5. Dapatkan Semua Pengguna (Admin & Public)
 Fitur: Dapatkan Semua Pengguna (Admin & Public)
