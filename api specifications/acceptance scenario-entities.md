@@ -65,3 +65,23 @@ Skenario test:
 	- ~~Maka ```Error(DETAIL_USER.NOT_CONTAIN_NEEDE_PROPERTY)```~~
 - ~~Ketika payload tidak sesuai tipe data~~
 	- ~~Maka ```Error(DETAIL_USER.NOT_MEET_DATA_TYPE_SPECIFICATION)```~~
+
+
+### ✅ 6. ```UpdateUser(payload)```
+```javascript
+DetailUser({
+	fullname,
+	statusKehadiran,
+	golongan,
+	nip,
+	nidn,
+	pangkat,
+	jabatanFungsional,
+	jabatanStruktural,
+})
+```
+Skenario test:
+- ~~Ketika payload tidak lengkap~~
+	- ~~Maka ```Error(UPDATE_USER.NOT_CONTAIN_NEEDE_PROPERTY)```~~
+- ~~Ketika payload tidak sesuai tipe data~~
+	- ~~Maka ```Error(UPDATE_USER.NOT_MEET_DATA_TYPE_SPECIFICATION)```~~
