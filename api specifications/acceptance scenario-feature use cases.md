@@ -5,6 +5,10 @@ Fitur: Registrasi pengguna
 
 Deskripsi: Melakukan registrasi pengguna. Pengguna pertama adalah Admin, kemudian hanya dapat digunakan admin untuk mendaftarkan dosen baru.
 
+Dependency:
+- password hash
+- user repository
+
 Payload:
 -   fullname (String)
 -   username (String)
