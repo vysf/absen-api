@@ -1,6 +1,6 @@
 ﻿# Acceptance Scenario- Features Use Cases
 
-### 1. Registrasi Pengguna
+### ✅ 1. Registrasi Pengguna
 Fitur: Registrasi pengguna
 
 Deskripsi: Melakukan registrasi pengguna. Pengguna pertama adalah Admin, kemudian hanya dapat digunakan admin untuk mendaftarkan dosen baru.
@@ -20,16 +20,6 @@ Payload:
  - enkripsi password
  - simpan payload ke dalam database
  - kembalikan addedUser dengan kode 201
-
-Spesifikasi:
--   Ketika payload kosong
-    -   Mengembalikan error.
--   Ketika payload beda tipe data
-    -   Mengembalikan error
--   Ketika username tidak tersedia
-    -   Mengembalikan error
-- Simpan addedUser
-	- Mengembalikan status success dan kode status 201
 
 ### 2. Login
 Fitur: Login
