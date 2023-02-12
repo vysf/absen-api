@@ -7,6 +7,7 @@ const UserRepositoryPostgres = require('../UserRepositoryPostgres');
 
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 const UserDetail = require('../../../Domains/users/entities/UserDetail');
+const UpdateUser = require('../../../Domains/users/entities/UpdateUser');
 
 describe('UserRepositoryPostgres', () => {
   afterEach(async () => {
@@ -360,9 +361,10 @@ describe('UserRepositoryPostgres', () => {
       };
 
       const updatedUserData = new UserDetail({ ...userBeforeUpdate, ...dataUpdate });
+      const updateUser = new UpdateUser({ ...updatedUserData });
 
       // Action
-      await userRepositoryPostgres.updateUser(id, updatedUserData);
+      await userRepositoryPostgres.updateUser(id, updateUser);
       const userAfterUpdate = await userRepositoryPostgres.getUserById(id);
 
       // Assert
