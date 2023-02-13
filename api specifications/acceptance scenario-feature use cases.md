@@ -120,7 +120,7 @@ Spesifikasi:
 - ~~Ketika id ditemukan~~
 	- ~~Mengembalikan pengguna~~
 
-### 7. Ubah Data Seorang Pengguna (Admin & Dosen)
+### ✅ 7. Ubah Data Seorang Pengguna (Admin & Dosen)
 Fitur: Ubah Data Seorang Pengguna (Admin & Dosen)
 
 Deskripsi: Mengubah data seorang pengguna. Berlaku untuk admin dan dosen.
@@ -138,22 +138,9 @@ Payload:
 
  Use case:
  - Dapatkan payload
- - Dapatkan header (token)
  - Cari pengguna dengan id
  - ubah data pengguna. masukkan ke database
  - kirimkan status success dan message
-
-Spesifikasi:
--   Ketika header kosong
-    -   Mengembalikan error.
--   Ketika payload kosong
-    -   Mengembalikan error.
--   Ketika payload beda tipe data
-    -   Mengembalikan error
-- Ketika pengguna tidak ditemukan
-	- Mengembalikan NotFoundError
--   Ubah data pengguna
-	- Mengembalikan  status success dan kode 200
 
 ### 8. Ubah Password Seorang Pengguna (Admin & Dosen)
 Fitur: Ubah Data Seorang Pengguna (Admin & Dosen)
