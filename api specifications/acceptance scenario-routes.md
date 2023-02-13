@@ -66,7 +66,7 @@ Scenario test:
 - should response 400 if payload has wrong data type
 - should response 400 if id not registered in database
 
-## Ubah Password Seorang Pengguna (Admin & Dosen)
+### Ubah Password Seorang Pengguna (Admin & Dosen)
 method: ```PUT```
 path: ```/users/{id}```
 - should response 200 and update user password
@@ -74,7 +74,7 @@ path: ```/users/{id}```
 - should response 400 if payload has wrong data type
 - should response 400 if id not registered in database
 
-## Upload Foto Seorang Pengguna (Admin & Dosen)
+### Upload Foto Seorang Pengguna (Admin & Dosen)
 method: ```POST```
 path: ```/users/{id}/photo```
 - should response 200 and update user photo
