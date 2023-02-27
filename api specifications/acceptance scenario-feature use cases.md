@@ -171,7 +171,7 @@ Spesifikasi:
 -   Ubah password pengguna
 	- Mengembalikan  status success dan kode 200
 
-### 9. Upload Foto Seorang Pengguna (Admin & Dosen)
+### ✅ 9. Upload Foto Seorang Pengguna (Admin & Dosen)
 Fitur: Upload Foto Seorang Pengguna (Admin & Dosen)
 
 Deskripsi: Mengubah foto seorang pengguna. Berlaku untuk admin dan dosen.
