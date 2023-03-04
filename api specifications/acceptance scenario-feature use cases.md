@@ -201,7 +201,7 @@ Spesifikasi:
 	- Mengembalikan  status success dan kode 200
 
 
-### 10. Hapus Data Seorang Pengguna (Admin)
+### ✅ 10. Hapus Data Seorang Pengguna (Admin)
 Fitur: Hapus Data Seorang Pengguna (Admin)
 
 Deskripsi: Mengubah foto seorang pengguna dengan role ```dosen```. Berlaku untuk admin.
