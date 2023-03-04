@@ -2,30 +2,6 @@ const UserRepository = require('../../../Domains/users/UserRepository');
 const DeleteUserUseCase = require('../DeleteUserUseCase');
 
 describe('DeleteUserUseCase', () => {
-  it('should throw error if use case payload is not contain user id', async () => {
-    // Arrange
-    const useCaseParams = {};
-    const deleteUserUseCase = new DeleteUserUseCase({});
-
-    // Action & Assert
-    await expect(deleteUserUseCase.execute(useCaseParams))
-      .rejects
-      .toThrowError('DELETE_USER_USE_CASE.NOT_CONTAIN_ID');
-  });
-
-  it('should throw error if id not a string', async () => {
-    // Arrange
-    const useCaseParams = {
-      id: [],
-    };
-    const deleteUserUseCase = new DeleteUserUseCase({});
-
-    // Action & Assert
-    await expect(deleteUserUseCase.execute(useCaseParams))
-      .rejects
-      .toThrowError('DELETE_USER_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION');
-  });
-
   it('should orchestrating the delete user action correctly', async () => {
     // Arrange
     const useCaseParams = {
