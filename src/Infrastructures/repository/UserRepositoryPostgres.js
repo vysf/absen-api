@@ -6,10 +6,11 @@ const UserDetail = require('../../Domains/users/entities/UserDetail');
 const UserRepository = require('../../Domains/users/UserRepository');
 
 class UserRepositoryPostgres extends UserRepository {
-  constructor(pool, idGenerator) {
+  constructor(pool, idGenerator, dateGenerator) {
     super();
     this._pool = pool;
     this._idGenerator = idGenerator;
+    this._dateGenerator = dateGenerator;
   }
 
   async verifyAvailableUsername(username) {
@@ -29,7 +30,7 @@ class UserRepositoryPostgres extends UserRepository {
     const { username, password, fullname } = registerUser;
     const id = `user-${this._idGenerator(12)}`;
     const role = 'dosen';
-    const createdAt = new Date().toISOString();
+    const createdAt = new this._dateGenerator().toISOString();
     const updatedAt = createdAt;
 
     const query = {

@@ -1,4 +1,9 @@
+/* istanbul ignore file */
 /* eslint-disable camelcase */
+
+// fs buat jadi this._fileSystem dan Date jadi this._dateGenerator
+// test semua Uncovered Line
+// lebih baik file ini masuk ke repository, ubah jadi UploadRepositoryStorage
 const fs = require('fs');
 const UploadRepository = require('../../../Domains/uploads/UploadRepository');
 

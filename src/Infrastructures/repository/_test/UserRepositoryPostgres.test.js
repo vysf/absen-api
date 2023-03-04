@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const InvariantError = require('../../../Commons/exceptions/InvariantError');
 const RegisterUser = require('../../../Domains/users/entities/RegisterUser');
@@ -46,7 +47,10 @@ describe('UserRepositoryPostgres', () => {
         fullname: 'Dicoding Indonesia',
       });
       const fakeIdGenerator = () => '123'; // stub!
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, fakeIdGenerator);
+      function fakeDateGenerator() {
+        this.toISOString = () => '2021';
+      } // stub!
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, fakeIdGenerator, fakeDateGenerator);
 
       // Action
       await userRepositoryPostgres.addUser(registerUser);
@@ -64,7 +68,10 @@ describe('UserRepositoryPostgres', () => {
         fullname: 'Dicoding Indonesia',
       });
       const fakeIdGenerator = () => '123'; // stub!
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, fakeIdGenerator);
+      function fakeDateGenerator() {
+        this.toISOString = () => '2021';
+      } // stub!
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, fakeIdGenerator, fakeDateGenerator);
 
       // Action
       const registeredUser = await userRepositoryPostgres.addUser(registerUser);
@@ -81,7 +88,7 @@ describe('UserRepositoryPostgres', () => {
   describe('getPasswordByUsername', () => {
     it('should throw InvariantError when user not found', () => {
       // Arrange
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
 
       // Action & Assert
       return expect(userRepositoryPostgres.getPasswordByUsername('dicoding'))
@@ -91,7 +98,7 @@ describe('UserRepositoryPostgres', () => {
 
     it('should return username password when user is found', async () => {
       // Arrange
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
       await UsersTableTestHelper.addUser({
         username: 'dicoding',
         password: 'secret_password',
@@ -106,7 +113,7 @@ describe('UserRepositoryPostgres', () => {
   describe('getIdByUsername', () => {
     it('should throw InvariantError when user not found', async () => {
       // Arrange
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
 
       // Action & Assert
       await expect(userRepositoryPostgres.getIdByUsername('dicoding'))
@@ -117,7 +124,7 @@ describe('UserRepositoryPostgres', () => {
     it('should return user id correctly', async () => {
       // Arrange
       await UsersTableTestHelper.addUser({ id: 'user-321', username: 'dicoding' });
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
 
       // Action
       const userId = await userRepositoryPostgres.getIdByUsername('dicoding');
@@ -185,7 +192,7 @@ describe('UserRepositoryPostgres', () => {
       await UsersTableTestHelper.addUser({ ...expectedUsersList[1], password: 'user2' });
       await UsersTableTestHelper.addUser({ ...expectedUsersList[2], password: 'user3' });
 
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
 
       // Action
       const users = await userRepositoryPostgres.getUsers('dosen');
@@ -255,7 +262,7 @@ describe('UserRepositoryPostgres', () => {
         photoUrl: null,
         ...expectedUsersList[0],
       };
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
 
       // Action
       const users = await userRepositoryPostgres.getUsers('dosen');
@@ -289,7 +296,7 @@ describe('UserRepositoryPostgres', () => {
         password: 'secret',
       });
 
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
 
       // Action
       const user = await userRepositoryPostgres.getUserById(id);
@@ -325,7 +332,7 @@ describe('UserRepositoryPostgres', () => {
         password: 'secret',
       });
 
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
 
       // Action & Assert
       await expect(userRepositoryPostgres.checkUserIsExist(id)).resolves.not.toThrow(NotFoundError);
@@ -333,7 +340,7 @@ describe('UserRepositoryPostgres', () => {
 
     it('should throw NotFoundError if user does not exist', async () => {
       // Arrange
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
 
       // Action & Assert
       await expect(userRepositoryPostgres.checkUserIsExist('user-109')).rejects.toThrow(NotFoundError);
@@ -352,7 +359,7 @@ describe('UserRepositoryPostgres', () => {
         password: 'secret',
       });
 
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
 
       const userBeforeUpdate = await userRepositoryPostgres.getUserById(id);
 
@@ -373,7 +380,7 @@ describe('UserRepositoryPostgres', () => {
 
     it('should throw NotFound Error when user not exist', async () => {
       // Arrange
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
 
       // Action & Assert
       await expect(userRepositoryPostgres.updateUser('xxx', {}))
@@ -384,7 +391,7 @@ describe('UserRepositoryPostgres', () => {
   describe('deleteUserById', () => {
     it('should throw NotFoundError when user that want to delete is not exist', async () => {
       // Arrange
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
 
       // Action & Assert
       await expect(userRepositoryPostgres.deleteUserById('xxx'))
@@ -402,7 +409,7 @@ describe('UserRepositoryPostgres', () => {
         password: 'secret',
       });
 
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
 
       // Action
       await userRepositoryPostgres.deleteUserById(id);
@@ -416,7 +423,7 @@ describe('UserRepositoryPostgres', () => {
   describe('updateUserPasswordById', () => {
     it('should throw NotFoundError when user does not exist', async () => {
       // Arrange
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
 
       // Action & Assert
       await expect(userRepositoryPostgres.updateUserPasswordById('xxx', ''))
@@ -436,7 +443,7 @@ describe('UserRepositoryPostgres', () => {
         password,
       });
 
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
 
       // Action & Assert
       await expect(userRepositoryPostgres.updateUserPasswordById(id, changePassword))
@@ -453,7 +460,7 @@ describe('UserRepositoryPostgres', () => {
         id, photoUrl,
       });
 
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
 
       // Action
       const photo = await UsersTableTestHelper.findUsersById(id);
@@ -466,7 +473,7 @@ describe('UserRepositoryPostgres', () => {
 
     it('should throw NotFoundError if user that want to update phto profile does not exist', async () => {
       // Arrange
-      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
 
       // Action & Assert
       await expect(userRepositoryPostgres.addPhotoProfile('xxx', 'photoUrl.img'))

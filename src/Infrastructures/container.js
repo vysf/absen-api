@@ -2,27 +2,39 @@
 
 const { createContainer } = require('instances-container');
 
+// internal js module
+const date = Date;
+
 // external agency
 const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
 const Jwt = require('@hapi/jwt');
+// const path = require('path');
 const pool = require('./database/postgres/pool');
 
 // service (repository, helper, manager, etc)
 const UserRepository = require('../Domains/users/UserRepository');
+const AuthenticationRepository = require('../Domains/authentications/AuthenticationRepository');
+const UploadRepository = require('../Domains/uploads/UploadRepository');
 const PasswordHash = require('../Applications/security/PasswordHash');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
+const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres');
 const BcryptPasswordHash = require('./security/BcryptPasswordHash');
-
-// use case
-const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
 const AuthenticationTokenManager = require('../Applications/security/AuthenticationTokenManager');
 const JwtTokenManager = require('./security/JwtTokenManager');
-const LoginUserUseCase = require('../Applications/use_case/LoginUserUseCase');
-const AuthenticationRepository = require('../Domains/authentications/AuthenticationRepository');
-const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres');
-const LogoutUserUseCase = require('../Applications/use_case/LogoutUserUseCase');
+// const StorageService = require('./database/storage/StorageService');
+
+// use case
 const RefreshAuthenticationUseCase = require('../Applications/use_case/RefreshAuthenticationUseCase');
+const LoginUserUseCase = require('../Applications/use_case/LoginUserUseCase');
+const LogoutUserUseCase = require('../Applications/use_case/LogoutUserUseCase');
+const AddUserUseCase = require('../Applications/use_case/AddUserUseCase');
+const DeleteUserUseCase = require('../Applications/use_case/DeleteUserUseCase');
+const GetUsersUseCase = require('../Applications/use_case/GetUsersUseCase');
+const GetUserUseCase = require('../Applications/use_case/GetUserUseCase');
+const UpdateUserPasswordUseCase = require('../Applications/use_case/UpdateUserPasswordUseCase');
+const UpdateUserUseCase = require('../Applications/use_case/UpdateUserUseCase');
+const UploadImageUseCase = require('../Applications/use_case/UploadImageUseCase');
 
 // creating container
 const container = createContainer();
@@ -39,6 +51,9 @@ container.register([
         },
         {
           concrete: nanoid,
+        },
+        {
+          concrete: date,
         },
       ],
     },
@@ -76,6 +91,17 @@ container.register([
       ],
     },
   },
+  // {
+  //   key: UploadRepository.name,
+  //   CLass: StorageService,
+  //   parameter: {
+  //     dependencies: [
+  //       {
+  //         internal: path.resolve(__dirname, 'infrastructures/database/storage/file/images'),
+  //       },
+  //     ],
+  //   },
+  // },
 ]);
 
 // registering use cases
@@ -93,6 +119,92 @@ container.register([
         {
           name: 'passwordHash',
           internal: PasswordHash.name,
+        },
+      ],
+    },
+  },
+  {
+    key: DeleteUserUseCase.name,
+    Class: DeleteUserUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'userRepository',
+          internal: UserRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetUsersUseCase.name,
+    Class: GetUsersUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'userRepository',
+          internal: UserRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: GetUserUseCase.name,
+    Class: GetUserUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'userRepository',
+          internal: UserRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: UpdateUserPasswordUseCase.name,
+    Class: UpdateUserPasswordUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'userRepository',
+          internal: UserRepository.name,
+        },
+        {
+          name: 'passwordHash',
+          internal: PasswordHash.name,
+        },
+      ],
+    },
+  },
+  {
+    key: UpdateUserUseCase.name,
+    Class: UpdateUserUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'userRepository',
+          internal: UserRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: UploadImageUseCase.name,
+    Class: UploadImageUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'userRepository',
+          internal: UserRepository.name,
+        },
+        {
+          name: 'uploadRepository',
+          internal: UploadRepository.name,
         },
       ],
     },
