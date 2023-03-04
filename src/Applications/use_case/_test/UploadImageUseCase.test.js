@@ -5,6 +5,46 @@ const UserRepository = require('../../../Domains/users/UserRepository');
 const UploadImageUseCase = require('../UploadImageUseCase');
 
 describe('UploadImageUseCase', () => {
+  it('should throw error if payload not contain needed property', async () => {
+    // Arrange
+    const useCasePayload = {
+      photo: {
+        hapi: {
+          headers: {},
+          filename: 'image.jpeg,',
+        },
+      },
+    };
+
+    const uploadImageUseCase = new UploadImageUseCase({});
+
+    // Action & Assert
+    await expect(uploadImageUseCase.execute(useCasePayload, {}))
+      .rejects
+      .toThrowError('UPLOAD_IMAGE.NOT_CONTAIN_NEEDED_PROPERTY');
+  });
+
+  it('should throw error if payload not contain mime type specification', async () => {
+    // Arrange
+    const useCasePayload = {
+      photo: {
+        hapi: {
+          headers: {
+            'content-type': 'pdf',
+          },
+          filename: 'image.jpeg,',
+        },
+      },
+    };
+
+    const uploadImageUseCase = new UploadImageUseCase({});
+
+    // Action & Assert
+    await expect(uploadImageUseCase.execute(useCasePayload, {}))
+      .rejects
+      .toThrowError('UPLOAD_IMAGE.NOT_MEET_MIME_TYPE_SPECIFICATION');
+  });
+
   it('should orchestrating the upload image action correctly', async () => {
     // Arrange
     const useCaseParams = {
