@@ -142,7 +142,7 @@ Payload:
  - ubah data pengguna. masukkan ke database
  - kirimkan status success dan message
 
-### 8. Ubah Password Seorang Pengguna (Admin & Dosen)
+### ✅ 8. Ubah Password Seorang Pengguna (Admin & Dosen)
 Fitur: Ubah Data Seorang Pengguna (Admin & Dosen)
 
 Deskripsi: Mengubah data seorang pengguna. Berlaku untuk admin dan dosen.
