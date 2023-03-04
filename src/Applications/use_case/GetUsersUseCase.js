@@ -1,13 +1,13 @@
 /* eslint-disable class-methods-use-this */
 class GetUsersUseCase {
   constructor({ userRepository }) {
-    this.userRepository = userRepository;
+    this._userRepository = userRepository;
   }
 
   async execute(useCasePayload) {
     this._validatePayload(useCasePayload);
     const { role } = useCasePayload;
-    const users = await this.userRepository.getUsers(role);
+    const users = await this._userRepository.getUsers(role);
 
     return users;
   }

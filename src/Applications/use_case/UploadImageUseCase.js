@@ -3,8 +3,8 @@ const UpdateUser = require('../../Domains/users/entities/UpdateUser');
 
 class UploadImageUseCase {
   constructor({ uploadRepository, userRepository }) {
-    this.uploadRepository = uploadRepository;
-    this.userRepository = userRepository;
+    this._uploadRepository = uploadRepository;
+    this._userRepository = userRepository;
   }
 
   // photo.hapi tidak boleh ada disini, masukan kedalam payload
@@ -15,12 +15,12 @@ class UploadImageUseCase {
 
     this._validateImageHeaders(photo.hapi.headers);
 
-    const filename = await this.uploadRepository.writeFile(photo, photo.hapi);
+    const filename = await this._uploadRepository.writeFile(photo, photo.hapi);
     const fileLocation = `http://${process.env.HOST}:${process.env.PORT}/upload/images/${filename}`;
 
-    const userDetail = await this.userRepository.getUserById(id);
+    const userDetail = await this._userRepository.getUserById(id);
 
-    const updatedUser = await this.userRepository
+    const updatedUser = await this._userRepository
       .updateUser(id, new UpdateUser({ ...userDetail, photoUrl: fileLocation }));
 
     return updatedUser;
