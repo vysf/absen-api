@@ -1,10 +1,6 @@
-const LoginUserUseCase = require('../../../../Applications/use_case/LoginUserUseCase');
-const RefreshAuthenticationUseCase = require('../../../../Applications/use_case/RefreshAuthenticationUseCase');
-const LogoutUserUseCase = require('../../../../Applications/use_case/LogoutUserUseCase');
-
 class AuthenticationsHandler {
-  constructor(container) {
-    this._container = container;
+  constructor(injection) {
+    this._container = injection;
 
     this.postAuthenticationHandler = this.postAuthenticationHandler.bind(this);
     this.putAuthenticationHandler = this.putAuthenticationHandler.bind(this);
@@ -12,7 +8,7 @@ class AuthenticationsHandler {
   }
 
   async postAuthenticationHandler(request, h) {
-    const loginUserUseCase = this._container.getInstance(LoginUserUseCase.name);
+    const { loginUserUseCase } = this._container;
     const { accessToken, refreshToken } = await loginUserUseCase.execute(request.payload);
     const response = h.response({
       status: 'success',
@@ -26,8 +22,7 @@ class AuthenticationsHandler {
   }
 
   async putAuthenticationHandler(request) {
-    const refreshAuthenticationUseCase = this._container
-      .getInstance(RefreshAuthenticationUseCase.name);
+    const { refreshAuthenticationUseCase } = this._container;
     const accessToken = await refreshAuthenticationUseCase.execute(request.payload);
 
     return {
@@ -39,7 +34,7 @@ class AuthenticationsHandler {
   }
 
   async deleteAuthenticationHandler(request) {
-    const logoutUserUseCase = this._container.getInstance(LogoutUserUseCase.name);
+    const { logoutUserUseCase } = this._container;
     await logoutUserUseCase.execute(request.payload);
     return {
       status: 'success',

@@ -1,6 +1,6 @@
 const pool = require('../../database/postgres/pool');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
-const container = require('../../container');
+const injection = require('../../injection');
 const createServer = require('../createServer');
 
 describe('/users endpoint', () => {
@@ -21,7 +21,7 @@ describe('/users endpoint', () => {
         fullname: 'Dicoding Indonesia',
       };
       // eslint-disable-next-line no-undef
-      const server = await createServer(container);
+      const server = await createServer(injection);
 
       // Action
       const response = await server.inject({
@@ -43,7 +43,8 @@ describe('/users endpoint', () => {
         fullname: 'Dicoding Indonesia',
         password: 'secret',
       };
-      const server = await createServer(container);
+      // const server = await createServer(container);
+      const server = await createServer(injection);
 
       // Action
       const response = await server.inject({
@@ -66,7 +67,8 @@ describe('/users endpoint', () => {
         password: 'secret',
         fullname: ['Dicoding Indonesia'],
       };
-      const server = await createServer(container);
+      // const server = await createServer(container);
+      const server = await createServer(injection);
 
       // Action
       const response = await server.inject({
@@ -89,7 +91,8 @@ describe('/users endpoint', () => {
         password: 'secret',
         fullname: 'Dicoding Indonesia',
       };
-      const server = await createServer(container);
+      // const server = await createServer(container);
+      const server = await createServer(injection);
 
       // Action
       const response = await server.inject({
@@ -112,7 +115,8 @@ describe('/users endpoint', () => {
         password: 'secret',
         fullname: 'Dicoding Indonesia',
       };
-      const server = await createServer(container);
+      // const server = await createServer(container);
+      const server = await createServer(injection);
 
       // Action
       const response = await server.inject({
@@ -136,7 +140,8 @@ describe('/users endpoint', () => {
         fullname: 'Dicoding Indonesia',
         password: 'super_secret',
       };
-      const server = await createServer(container);
+      // const server = await createServer(container);
+      const server = await createServer(injection);
 
       // Action
       const response = await server.inject({
