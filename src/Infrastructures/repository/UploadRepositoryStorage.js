@@ -1,10 +1,3 @@
-/* eslint-disable class-methods-use-this */
-/* eslint-disable camelcase */
-
-// fs buat jadi this._fileSystem dan Date jadi this._dateGenerator
-// test semua Uncovered Line
-// lebih baik file ini masuk ke repository, ubah jadi UploadRepositoryStorage
-// const InvariantError = require('../../Commons/exceptions/InvariantError');
 const InvariantError = require('../../Commons/exceptions/InvariantError');
 const UploadRepository = require('../../Domains/uploads/UploadRepository');
 
@@ -20,23 +13,36 @@ class UploadRepositoryStorage extends UploadRepository {
     }
   }
 
-  // fungsi dengan nama writeFile yang menerima satu parameter
-  // yaitu file yang merupakan Readable dan objek meta yang
-  // mengandung informasi dari berkas yang akan ditulis seperti
-  // nama berkas, content-type, dan sebagainya.
-  writeFile(file, meta) {
-    const filename = this._dateGenerator.now() + meta.filename;
-    const path = `${this._folder}/${filename}`;
+  // Rename function to be more descriptive
+  // Split function into smaller functions with descriptive names
+  async writeFile(file, meta) {
+    const filename = this._generateFilename(meta.filename);
+    const path = this._getPath(filename);
 
+    await this._createWriteStream(file, path);
+    return filename;
+  }
+
+  // Generate filename based on current date and original filename
+  _generateFilename(originalFilename) {
+    return this._dateGenerator.now() + originalFilename;
+  }
+
+  // Generate full path to save file in based on folder and filename
+  _getPath(filename) {
+    return `${this._folder}/${filename}`;
+  }
+
+  // Create write stream for file and save it to path
+  // Use async/await instead of returning a Promise
+  async _createWriteStream(file, path) {
     const fileStream = this._fileSystem.createWriteStream(path);
 
-    return new Promise((resolve, reject) => {
+    await new Promise((resolve, reject) => {
       fileStream.on('error', () => reject(new InvariantError('file stream kosong')));
-
-      file
-        .on('error', () => reject(new InvariantError('file kosong')))
+      file.on('error', () => reject(new InvariantError('file kosong')))
         .pipe(fileStream)
-        .on('finish', () => resolve(filename));
+        .on('finish', () => resolve());
     });
   }
 }

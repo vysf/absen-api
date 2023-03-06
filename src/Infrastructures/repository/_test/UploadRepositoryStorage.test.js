@@ -1,86 +1,87 @@
+/* eslint-disable no-new */
 /* eslint-disable max-classes-per-file */
 const fs = require('fs');
-const { PassThrough } = require('stream');
+const path = require('path');
 const UploadRepositoryStorage = require('../UploadRepositoryStorage');
-const UploadRepository = require('../../../Domains/uploads/UploadRepository');
-const InvariantError = require('../../../Commons/exceptions/InvariantError');
 
-jest.mock('fs');
 describe('UploadRepositoryStorage', () => {
   beforeAll(() => {
     fs.rmSync('./src/Infrastructures/storage', { recursive: true, force: true });
   });
 
-  it('should an instance of UploadRepository and make storage directory if it does not exist', () => {
-    // Arrange
-    const folder = './src/Infrastructures/storage/file/images';
-    const fsExistsSync = jest.spyOn(fs, 'existsSync');
-    const fsMkdirSync = jest.spyOn(fs, 'mkdirSync');
+  const folder = './src/Infrastructures/storage/file/images';
+  const filename = 'flower.jpg';
+  const dateGenerator = {
+    now: jest.fn(() => '20220305150000'),
+  };
 
-    // Action
-    const uploadRepositoryStorage = new UploadRepositoryStorage(folder, fs, {});
+  describe('constructor', () => {
+    it('should not create upload directory if it already exists', () => {
+      // Arrange
+      jest.spyOn(fs, 'existsSync').mockReturnValueOnce(true);
+      const mkdirSync = jest.spyOn(fs, 'mkdirSync');
 
-    // Assert
-    expect(uploadRepositoryStorage).toBeInstanceOf(UploadRepository);
-    expect(fsExistsSync).toBeCalledWith(folder);
-    expect(fsMkdirSync).toBeCalledWith(folder, { recursive: true });
+      // Act
+      new UploadRepositoryStorage(folder, fs, dateGenerator);
+
+      // Assert
+      expect(mkdirSync).not.toHaveBeenCalled();
+    });
+
+    it('should create upload directory if it does not exist', () => {
+      // Arrange
+      jest.spyOn(fs, 'existsSync').mockReturnValueOnce(false);
+      const mkdirSync = jest.spyOn(fs, 'mkdirSync');
+
+      // Act
+      new UploadRepositoryStorage(folder, fs, dateGenerator);
+
+      // Assert
+      expect(mkdirSync).toHaveBeenCalledWith(folder, { recursive: true });
+    });
+  });
+
+  describe('_generateFilename', () => {
+    it('should generate filename based on current date and original filename', () => {
+      const originalFilename = 'example.png';
+      const expectedFilename = `${dateGenerator.now()}example.png`;
+      const uploadRepositoryStorage = new UploadRepositoryStorage(folder, fs, dateGenerator);
+
+      const result = uploadRepositoryStorage._generateFilename(originalFilename);
+
+      expect(result).toEqual(expectedFilename);
+    });
+  });
+
+  describe('_getPath', () => {
+    it('should generate full path to save file in based on folder and filename', () => {
+      const expectedPath = `${folder}/${filename}`;
+      const uploadRepositoryStorage = new UploadRepositoryStorage(folder, fs, dateGenerator);
+
+      const result = uploadRepositoryStorage._getPath(filename);
+
+      expect(result).toEqual(expectedPath);
+    });
   });
 
   describe('writeFile function', () => {
-    it('should throw error if file is empty', async () => {
+    it('should save file and return filename', async () => {
       // Arrange
-      const folder = './src/Infrastructures/storage/file/images';
-      class FakeDate {
-        static now = () => '1678002996136';
-      }
-      const uploadRepositoryStorage = new UploadRepositoryStorage(folder, fs, FakeDate);
+      const filePath = path.resolve('./tests/images', filename);
+      const readable = fs.createReadStream(filePath);
 
-      const mockReadable = new PassThrough();
-      const mockFilePath = {};
-      const mockWriteable = new PassThrough();
-      fs.createWriteStream.mockReturnValueOnce(mockWriteable);
-      const mockError = new Error('You crossed the streams!');
+      const repository = new UploadRepositoryStorage(folder, fs, dateGenerator);
+      const meta = { filename };
 
-      // Action
-      const writeFile = uploadRepositoryStorage.writeFile(mockReadable, mockFilePath);
-      mockReadable.emit('error', mockError);
+      // Act
+      const result = await repository.writeFile(readable, meta);
 
       // Assert
-      await expect(writeFile).rejects.toThrow(InvariantError);
-    });
+      expect(result).toEqual(expect.stringMatching(/20220305150000flower.jpg/));
+      expect(fs.existsSync(path.join(folder, result))).toBe(true);
 
-    it('should save image inside storage/file/images directory', async () => {
-      // Arrange
-      const folder = './src/Infrastructures/storage/file/images';
-      class FakeDate {
-        static now = () => '1678002996136';
-      }
-      const uploadRepositoryStorage = new UploadRepositoryStorage(folder, fs, FakeDate);
-
-      const mockFilePath = {
-        filename: 'image.png',
-      };
-      const mockReadable = new PassThrough();
-      const mockWriteable = new PassThrough();
-      fs.createWriteStream.mockReturnValueOnce(mockWriteable);
-
-      const filename = FakeDate.now() + mockFilePath.filename;
-      const imagelocation = `${folder}/${filename}`;
-      const fsCreateWriteStream = jest.spyOn(fs, 'createWriteStream');
-
-      // Action
-      const writeFile = uploadRepositoryStorage.writeFile(mockReadable, mockFilePath);
-
-      setTimeout(() => {
-        mockReadable.emit('data', 'beep!');
-        mockReadable.emit('data', 'boop!');
-        mockReadable.emit('end');
-      }, 100);
-
-      // Assert
-      // await expect(writeFile).rejects.toEqual(mockError);
-      await expect(writeFile).resolves.toEqual(filename);
-      expect(fsCreateWriteStream).toBeCalledWith(imagelocation);
+      // Clean up
+      fs.unlinkSync(path.join(folder, result));
     });
   });
 });
