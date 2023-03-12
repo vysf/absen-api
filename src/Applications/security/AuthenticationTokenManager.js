@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable class-methods-use-this */
 class AuthenticationTokenManager {
   async createRefreshToken(payload) {
     throw new Error('AUTHENTICATION_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED');
@@ -12,6 +14,14 @@ class AuthenticationTokenManager {
   }
 
   async decodePayload() {
+    throw new Error('AUTHENTICATION_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED');
+  }
+
+  async verifyAccessToken(token) {
+    throw new Error('AUTHENTICATION_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED');
+  }
+
+  async getTokenFromHeader(header) {
     throw new Error('AUTHENTICATION_TOKEN_MANAGER.METHOD_NOT_IMPLEMENTED');
   }
 }

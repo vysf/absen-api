@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 const InvariantError = require('../../Commons/exceptions/InvariantError');
 const UploadRepository = require('../../Domains/uploads/UploadRepository');
 

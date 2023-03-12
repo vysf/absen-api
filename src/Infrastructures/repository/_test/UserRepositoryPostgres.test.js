@@ -9,6 +9,7 @@ const UserRepositoryPostgres = require('../UserRepositoryPostgres');
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 const UserDetail = require('../../../Domains/users/entities/UserDetail');
 const UpdateUser = require('../../../Domains/users/entities/UpdateUser');
+const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError');
 
 describe('UserRepositoryPostgres', () => {
   afterEach(async () => {
@@ -478,6 +479,51 @@ describe('UserRepositoryPostgres', () => {
       // Action & Assert
       await expect(userRepositoryPostgres.addPhotoProfile('xxx', 'photoUrl.img'))
         .rejects.toThrow(NotFoundError);
+    });
+  });
+
+  describe('verifyRole', () => {
+    it('should throw InvariantError when user not found', async () => {
+      // Arrange
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
+
+      // Action & Assert
+      await expect(userRepositoryPostgres.verifyAdmin('xxx'))
+        .rejects
+        .toThrowError(NotFoundError);
+    });
+
+    it('should throw AuthorizationError when user not admin', async () => {
+      // Arrange
+      const user = {
+        id: 'user-1',
+        username: 'jhondoe',
+        role: 'dosen',
+      };
+      await UsersTableTestHelper.addUser(user);
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
+
+      // Action & Assert
+      await expect(userRepositoryPostgres.verifyAdmin(user.id))
+        .rejects
+        .toThrowError(AuthorizationError);
+    });
+
+    it('should throw any error when exists user and correct role', async () => {
+      // Arrange
+      const user = {
+        id: 'user-1',
+        username: 'jhondoe',
+        role: 'admin',
+      };
+      await UsersTableTestHelper.addUser(user);
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
+
+      // Action & Assert
+      await expect(userRepositoryPostgres.verifyAdmin(user.id))
+        .resolves
+        .not
+        .toThrowError(AuthorizationError);
     });
   });
 });

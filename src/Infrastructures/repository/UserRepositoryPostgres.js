@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 const InvariantError = require('../../Commons/exceptions/InvariantError');
 const NotFoundError = require('../../Commons/exceptions/NotFoundError');
+const AuthorizationError = require('../../Commons/exceptions/AuthorizationError');
 const RegisteredUser = require('../../Domains/users/entities/RegisteredUser');
 const UserDetail = require('../../Domains/users/entities/UserDetail');
 const UserRepository = require('../../Domains/users/UserRepository');
@@ -102,6 +103,10 @@ class UserRepositoryPostgres extends UserRepository {
 
     const result = await this._pool.query(query);
 
+    if (!result.rowCount) {
+      throw new NotFoundError('User tidak ditemukan');
+    }
+
     return new UserDetail({
       updatedAt: result.rows[0].updated_at,
       createdAt: result.rows[0].created_at,
@@ -196,6 +201,25 @@ class UserRepositoryPostgres extends UserRepository {
 
     if (!result.rowCount) {
       throw new NotFoundError('User tidak ditemukan');
+    }
+  }
+
+  async verifyAdmin(id) {
+    const query = {
+      text: 'SELECT role FROM users WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('User tidak ditemukan');
+    }
+
+    const { role } = result.rows[0];
+
+    if (role !== 'admin') {
+      throw new AuthorizationError('Anda tidak berhak mengakses resource ini');
     }
   }
 }

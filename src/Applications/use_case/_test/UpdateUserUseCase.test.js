@@ -1,6 +1,7 @@
 const UpdateUser = require('../../../Domains/users/entities/UpdateUser');
 const UserDetail = require('../../../Domains/users/entities/UserDetail');
 const UserRepository = require('../../../Domains/users/UserRepository');
+const AuthenticationTokenManager = require('../../security/AuthenticationTokenManager');
 const UpdateUserUseCase = require('../UpdateUserUseCase');
 
 describe('UpdateUserUseCase', () => {
@@ -13,6 +14,12 @@ describe('UpdateUserUseCase', () => {
     const useCaseParams = {
       id: 'user-12',
     };
+
+    const useCaseHeader = {
+      authorization: 'Bearer accessToken',
+    };
+
+    const expectedAccessToken = 'accessToken';
 
     const userDetail = new UserDetail({
       id: useCaseParams.id,
@@ -37,20 +44,34 @@ describe('UpdateUserUseCase', () => {
     });
 
     const mockUserRepository = new UserRepository();
+    const mockAuthenticationTokenManager = new AuthenticationTokenManager();
 
     mockUserRepository.getUserById = jest.fn()
       .mockImplementation(() => Promise.resolve(userDetail));
     mockUserRepository.updateUser = jest.fn()
       .mockImplementation(() => Promise.resolve());
 
+    mockAuthenticationTokenManager.getTokenFromHeader = jest.fn()
+      .mockImplementation(() => Promise.resolve('accessToken'));
+    mockAuthenticationTokenManager.verifyAccessToken = jest.fn()
+      .mockImplementation(() => Promise.resolve());
+    // mockAuthenticationTokenManager.decodePayload = jest.fn()
+    //   .mockImplementation(() => Promise.resolve({ id: 'user-1' }));
+
     const updateUserUseCase = new UpdateUserUseCase({
       userRepository: mockUserRepository,
+      authenticationTokenManager: mockAuthenticationTokenManager,
     });
 
     // Action
-    await updateUserUseCase.execute(useCasePayload, useCaseParams);
+    await updateUserUseCase.execute(useCasePayload, useCaseParams, useCaseHeader);
 
     // Assert
+    expect(mockAuthenticationTokenManager.getTokenFromHeader)
+      .toBeCalledWith(useCaseHeader.authorization);
+    expect(mockAuthenticationTokenManager.verifyAccessToken).toBeCalledWith(expectedAccessToken);
+    // expect(mockAuthenticationTokenManager.decodePayload).toBeCalledWith(expectedAccessToken);
+
     expect(mockUserRepository.getUserById).toHaveBeenCalledWith(useCaseParams.id);
     expect(mockUserRepository.updateUser).toHaveBeenCalledWith(useCaseParams.id, userUpdate);
   });

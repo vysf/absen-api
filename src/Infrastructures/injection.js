@@ -47,13 +47,14 @@ const serviceInstanceContainer = {
   passwordHash: new BcryptPasswordHash(bcrypt),
 };
 
-const useCaseInstanceCOntainer = {
+const useCaseInstanceContainer = {
   addUserUseCase: new AddUserUseCase({
     userRepository: serviceInstanceContainer.userRepository,
     passwordHash: serviceInstanceContainer.passwordHash,
   }),
   deleteUserUseCase: new DeleteUserUseCase({
     userRepository: serviceInstanceContainer.userRepository,
+    authenticationTokenManager: serviceInstanceContainer.authenticationTokenManager,
   }),
   getUsersUseCase: new GetUsersUseCase({
     userRepository: serviceInstanceContainer.userRepository,
@@ -64,9 +65,11 @@ const useCaseInstanceCOntainer = {
   updateUserPasswordUseCase: new UpdateUserPasswordUseCase({
     userRepository: serviceInstanceContainer.userRepository,
     passwordHash: serviceInstanceContainer.passwordHash,
+    authenticationTokenManager: serviceInstanceContainer.authenticationTokenManager,
   }),
   updateUserUseCase: new UpdateUserUseCase({
     userRepository: serviceInstanceContainer.userRepository,
+    authenticationTokenManager: serviceInstanceContainer.authenticationTokenManager,
   }),
   uploadImageUseCase: new UploadImageUseCase({
     userRepository: serviceInstanceContainer.userRepository,
@@ -89,5 +92,5 @@ const useCaseInstanceCOntainer = {
 
 module.exports = {
   ...serviceInstanceContainer,
-  ...useCaseInstanceCOntainer,
+  ...useCaseInstanceContainer,
 };

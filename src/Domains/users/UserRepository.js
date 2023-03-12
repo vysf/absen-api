@@ -44,6 +44,10 @@ class UserRepository {
   async addPhotoProfile(id, photoUrl) {
     throw new Error('USER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   }
+
+  async verifyAdmin(id) {
+    throw new Error('USER_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+  }
 }
 
 module.exports = UserRepository;

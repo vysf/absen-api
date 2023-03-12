@@ -19,6 +19,8 @@ DomainErrorTranslator._directories = {
   'DELETE_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('refresh token harus string'),
   'DETAIL_USER.NOT_CONTAIN_NEEDE_PROPERTY': new InvariantError('properti detail user ada yang kosong'),
   'DETAIL_USER.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('properti detail user berbeda tipe data'),
+  'GET_USER_USE_CASE.NOT_CONTAIN_ID': new InvariantError('properti get user ada yang kosong'),
+  'GET_USER_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('properti get user berbeda tipe data'),
 };
 
 module.exports = DomainErrorTranslator;

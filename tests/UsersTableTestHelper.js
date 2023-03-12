@@ -47,6 +47,15 @@ const UsersTableTestHelper = {
     return result.rows;
   },
 
+  async updateRole(id, role) {
+    const query = {
+      text: 'UPDATE users SET role = $1 WHERE id = $2',
+      values: [role, id],
+    };
+
+    await pool.query(query);
+  },
+
   async cleanTable() {
     await pool.query('DELETE FROM users WHERE 1=1');
   },

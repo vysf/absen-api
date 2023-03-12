@@ -61,7 +61,7 @@ Scenario test:
 method: ```PUT```
 path: ```/users/{id}```
 Scenario test:
-- should response 200 and update user data
+- should response 201 and update user data
 - should response 400 if payload not contain needed property
 - should response 400 if payload has wrong data type
 - should response 400 if id not registered in database
@@ -69,7 +69,7 @@ Scenario test:
 ### Ubah Password Seorang Pengguna (Admin & Dosen)
 method: ```PUT```
 path: ```/users/{id}```
-- should response 200 and update user password
+- should response 201 and update user password
 - should response 400 if payload not contain needed property
 - should response 400 if payload has wrong data type
 - should response 400 if id not registered in database
@@ -77,7 +77,7 @@ path: ```/users/{id}```
 ### Upload Foto Seorang Pengguna (Admin & Dosen)
 method: ```POST```
 path: ```/users/{id}/photo```
-- should response 200 and update user photo
+- should response 201 and update user photo
 - should response 400 if payload not contain needed property
 - should response 400 if payload has wrong data type
 - should response 400 if id not registered in database
