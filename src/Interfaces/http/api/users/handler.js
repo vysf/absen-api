@@ -66,7 +66,7 @@ class UsersHandler {
       status: 'success',
       message: 'data berhasil diubah',
     });
-    response.code(201);
+    response.code(200);
     return response;
   }
 
@@ -77,9 +77,9 @@ class UsersHandler {
 
     const response = h.response({
       status: 'success',
-      message: 'data berhasil diubah',
+      message: 'password berhasil diubah',
     });
-    response.code(201);
+    response.code(200);
     return response;
   }
 
@@ -89,9 +89,9 @@ class UsersHandler {
 
     const response = h.response({
       status: 'success',
-      message: 'data berhasil diubah',
+      message: 'user berhasil dihapus',
     });
-    response.code(201);
+    response.code(200);
     return response;
   }
 }

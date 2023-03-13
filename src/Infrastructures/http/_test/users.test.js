@@ -203,7 +203,7 @@ describe('/users endpoint', () => {
       expect(responseJson.data.user).toBeDefined();
     });
 
-    it('should response 400 if user not exists', async () => {
+    it('should response 400 if user not registered in database', async () => {
       // Arrange
       const server = await createServer(injection);
       const id = 'user-1';
@@ -247,7 +247,7 @@ describe('/users endpoint', () => {
         // Assert
         const responseJson = JSON.parse(response.payload);
 
-        expect(response.statusCode).toEqual(201);
+        expect(response.statusCode).toEqual(200);
         expect(responseJson.status).toEqual('success');
         expect(responseJson.message).toBeDefined();
       });
@@ -276,7 +276,7 @@ describe('/users endpoint', () => {
       // Assert
       const responseJson = JSON.parse(response.payload);
 
-      expect(response.statusCode).toEqual(201);
+      expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual('success');
       expect(responseJson.message).toBeDefined();
     });
@@ -320,7 +320,7 @@ describe('/users endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       const result = await UsersTableTestHelper.findUsersById(user.id);
 
-      expect(response.statusCode).toEqual(201);
+      expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual('success');
       expect(responseJson.message).toBeDefined();
       expect(result[0].is_delete).toEqual(true);

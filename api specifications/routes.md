@@ -1,7 +1,7 @@
 ﻿# API Absen Dosen
 Ini adalah API yang dibuat khusus untuk melayani absensi dosen
 
-## Registrasi pengguna (Admin & Dosen)
+## ✅ Registrasi pengguna (Admin & Dosen)
 method: ```POST```
 path: ```/users```
 body request:
@@ -26,7 +26,7 @@ response body:
 	},
 }
 ```
-## Login (Public)
+## ✅ Login (Public)
 method: ```POST```
 path: ```/authentications```
 body request:
@@ -47,7 +47,7 @@ response body:
 	},
 }
 ```
-## Refresh Token (Admin & Dosen)
+## ✅ Refresh Token (Admin & Dosen)
 method: ```PUT```
 path: ```/authentications```
 body request:
@@ -66,7 +66,7 @@ response body:
 	},
 }
 ```
-## Logout (Admin & Dosen)
+## ✅ Logout (Admin & Dosen)
 method: ```DELETE```
 path: ```/authentications```
 body request:
@@ -82,7 +82,7 @@ response body:
 	"status": "success",
 }
 ```
-## Dapatkan Semua Pengguna (Admin & Public)
+## ✅ Dapatkan Semua Pengguna (Admin & Public)
 method: ```GET```
 path: ```/users```
 body request:
@@ -122,7 +122,7 @@ response body:
 	],
 }
 ```
-## Dapatkan Seorang Pengguna (Admin & Public)
+## ✅ Dapatkan Seorang Pengguna (Admin & Public)
 method: ```GET```
 path: ```/users/{id}```
 body request:
@@ -150,8 +150,7 @@ response body:
 	},
 }
 ```
-
-## Ubah Data Seorang Pengguna (Admin & Dosen)
+## ✅ Ubah Data Seorang Pengguna (Admin & Dosen)
 method: ```PUT```
 path: ```/users/{id}```
 body request:
@@ -174,8 +173,7 @@ response body:
 	"message": "data berhasil diubah",
 }
 ```
-
-## Ubah Password Seorang Pengguna (Admin & Dosen)
+## ✅ Ubah Password Seorang Pengguna (Admin & Dosen)
 method: ```PUT```
 path: ```/users/{id}```
 body request:
@@ -189,7 +187,7 @@ response body:
 ```json
 {
 	"status": "success",
-	"message": "passwordberhasil diubah",
+	"message": "password berhasil diubah",
 }
 ```
 ## Upload Foto Seorang Pengguna (Admin & Dosen)
@@ -209,7 +207,7 @@ response body:
 	"message": "foto profil berhasil diubah",
 }
 ```
-## Hapus Data Seorang Pengguna (Admin)
+## ✅ Hapus Data Seorang Pengguna (Admin)
 method: ```DELETE```
 path: ```/users/{id}```
 body request:
@@ -223,7 +221,7 @@ response body:
 ```json
 {
 	"status": "success",
-	"message": "User berhasil dihapus",
+	"message": "user berhasil dihapus",
 }
 ```
 
