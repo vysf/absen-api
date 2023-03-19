@@ -50,13 +50,15 @@ describe('UpdateUserUseCase', () => {
       .mockImplementation(() => Promise.resolve(userDetail));
     mockUserRepository.updateUser = jest.fn()
       .mockImplementation(() => Promise.resolve());
+    mockUserRepository.checkRole = jest.fn()
+      .mockImplementation(() => Promise.resolve('dosen'));
 
     mockAuthenticationTokenManager.getTokenFromHeader = jest.fn()
       .mockImplementation(() => Promise.resolve('accessToken'));
     mockAuthenticationTokenManager.verifyAccessToken = jest.fn()
       .mockImplementation(() => Promise.resolve());
-    // mockAuthenticationTokenManager.decodePayload = jest.fn()
-    //   .mockImplementation(() => Promise.resolve({ id: 'user-1' }));
+    mockAuthenticationTokenManager.decodePayload = jest.fn()
+      .mockImplementation(() => Promise.resolve(useCaseParams));
 
     const updateUserUseCase = new UpdateUserUseCase({
       userRepository: mockUserRepository,
@@ -70,9 +72,10 @@ describe('UpdateUserUseCase', () => {
     expect(mockAuthenticationTokenManager.getTokenFromHeader)
       .toBeCalledWith(useCaseHeader.authorization);
     expect(mockAuthenticationTokenManager.verifyAccessToken).toBeCalledWith(expectedAccessToken);
-    // expect(mockAuthenticationTokenManager.decodePayload).toBeCalledWith(expectedAccessToken);
+    expect(mockAuthenticationTokenManager.decodePayload).toBeCalledWith(expectedAccessToken);
 
     expect(mockUserRepository.getUserById).toHaveBeenCalledWith(useCaseParams.id);
+    expect(mockUserRepository.checkRole).toHaveBeenCalledWith(useCaseParams.id);
     expect(mockUserRepository.updateUser).toHaveBeenCalledWith(useCaseParams.id, userUpdate);
   });
 });
