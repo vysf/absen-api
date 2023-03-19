@@ -21,12 +21,14 @@ class UpdateUserPasswordUseCase {
    * Adapun algoritma yang berjalan adalah:
    * 1. melakukan cek `useCasePayload` agar input sesuai dengan yang diinginkan
    * 2. mendapatkan access token dari `useCaseHeader`
-   * 3. melakukan verifikasi access token
-   * 4. mendapatan id user dari `useCaseParams`
-   * 5. mendapatkan plain password dari `useCasePayload`
-   * 6. melakukan pengecekan keberadaan user didalam database berdasarkan id
-   * 7. melakukan hashing password menggunkan plain password
-   * 8. melakukan perubahan data untuk password baru berdasarkan id user yang diperlukan
+   * 3. melakukan decode untuk mendapatkan id dari access token
+   * 4. melakukan verifikasi access token
+   * 5. mendapatan id user dari `useCaseParams`
+   * 6. mendapatkan plain password dari `useCasePayload`
+   * 7. melakukan pengecekan keberadaan user didalam database berdasarkan id
+   * 8. melakukan hashing password menggunkan plain password
+   * 9. Jika role adalah admin maka dia bisa mengubah password sendiri dan user lain
+   * 10. jika role adalh dosen maka dia hanya bisa mengubah password sendiri
    *
    * @param {object} useCasePayload payload berupa plain password
    * @param {object} useCaseParams param berupa id user
@@ -41,35 +43,31 @@ class UpdateUserPasswordUseCase {
       .getTokenFromHeader(useCaseHeader.authorization);
 
     // #3
-    await this._authenticationTokenManager.verifyAccessToken(accessToken);
+    const { id: userId } = await this._authenticationTokenManager.decodePayload(accessToken);
 
     // #4
-    const { id } = useCaseParams;
+    await this._authenticationTokenManager.verifyAccessToken(accessToken);
 
     // #5
-    const { password: plainPassword } = useCasePayload;
+    const { id } = useCaseParams;
 
     // #6
-    await this._userRepository.checkUserIsExist(id);
+    const { password: plainPassword } = useCasePayload;
 
     // #7
-    const newPassword = await this._passwordHash.hash(plainPassword);
-
-    // const { id: userId } = await this._authenticationTokenManager.decodePayload(accessToken);
-    // const role = await this._userRepository.checkRole(userId);
-    // if (role === 'dosen') {
-    //   await this._userRepository.updateUserPasswordById(userId, newPassword);
-    // }
-    // await this._userRepository.updateUserPasswordById(id, newPassword);
-
-    // jika access token berisi id dengan role admin, maka dapat mengubah password sendiri
-    // dan password user lain
-    // - accessToken.id (role: admin) -> updateUserPasswordById(useCaseParams.id, newPassword)
-    // jika access token berisi id dengan role dosen, maka hanya bisa mengubah password sendiri
-    // - accessToken.id (role: dosen) -> updateUserPasswordById(accessToken.id, newPassword)
+    await this._userRepository.checkUserIsExist(id);
 
     // #8
-    await this._userRepository.updateUserPasswordById(id, newPassword);
+    const newPassword = await this._passwordHash.hash(plainPassword);
+
+    // #9
+    const role = await this._userRepository.checkRole(userId);
+    if (role === 'admin') {
+      await this._userRepository.updateUserPasswordById(id, newPassword);
+    }
+
+    // #10
+    await this._userRepository.updateUserPasswordById(userId, newPassword);
   }
 
   /**
