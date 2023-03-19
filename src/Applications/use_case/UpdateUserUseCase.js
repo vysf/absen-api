@@ -48,9 +48,9 @@ class UpdateUserUseCase {
     // #4
     const role = await this._userRepository.checkRole(userId);
     if (role === 'admin') {
-      const adminDetail = await this._userRepository.getUserById(id);
+      const userDetail = await this._userRepository.getUserById(id);
       await this._userRepository
-        .updateUser(id, new UpdateUser({ ...adminDetail, ...useCasePayload }));
+        .updateUser(id, new UpdateUser({ ...userDetail, ...useCasePayload }));
     }
 
     const userDetail = await this._userRepository.getUserById(userId);
