@@ -482,7 +482,7 @@ describe('UserRepositoryPostgres', () => {
     });
   });
 
-  describe('verifyRole', () => {
+  describe('verifyAdmin', () => {
     it('should throw InvariantError when user not found', async () => {
       // Arrange
       const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
@@ -509,7 +509,7 @@ describe('UserRepositoryPostgres', () => {
         .toThrowError(AuthorizationError);
     });
 
-    it('should throw any error when exists user and correct role', async () => {
+    it('should not throw any error when exists user and correct role', async () => {
       // Arrange
       const user = {
         id: 'user-1',
@@ -524,6 +524,35 @@ describe('UserRepositoryPostgres', () => {
         .resolves
         .not
         .toThrowError(AuthorizationError);
+    });
+  });
+
+  describe('checkRole', () => {
+    it('should throw InvariantError when user not found', async () => {
+      // Arrange
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
+
+      // Action & Assert
+      await expect(userRepositoryPostgres.checkRole('xxx'))
+        .rejects
+        .toThrowError(NotFoundError);
+    });
+
+    it('should return correct role', async () => {
+      // Arrange
+      const user = {
+        id: 'user-1',
+        username: 'jhondoe',
+        role: 'dosen',
+      };
+      await UsersTableTestHelper.addUser(user);
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
+
+      // Action
+      const role = await userRepositoryPostgres.checkRole(user.id);
+
+      // Assert
+      expect(role).toEqual('dosen');
     });
   });
 });
