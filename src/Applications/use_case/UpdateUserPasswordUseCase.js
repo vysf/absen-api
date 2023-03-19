@@ -9,6 +9,8 @@ class UpdateUserPasswordUseCase {
    * @param {object} userRepository user repositori servis
    * @param {object} passwordHash password hash servis
    * @param {object} authenticationTokenManager autentikasi token meneger servis
+   * @see {@link src/infrastructures/repository}
+   * @see {@link src/infrastructures/security}
    */
   constructor({ userRepository, passwordHash, authenticationTokenManager }) {
     this._userRepository = userRepository;
