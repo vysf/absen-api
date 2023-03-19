@@ -222,6 +222,21 @@ class UserRepositoryPostgres extends UserRepository {
       throw new AuthorizationError('Anda tidak berhak mengakses resource ini');
     }
   }
+
+  async checkRole(id) {
+    const query = {
+      text: 'SELECT role FROM users WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rowCount) {
+      throw new NotFoundError('User tidak ditemukan');
+    }
+
+    return result.rows[0].role;
+  }
 }
 
 module.exports = UserRepositoryPostgres;
