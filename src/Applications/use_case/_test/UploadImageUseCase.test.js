@@ -2,6 +2,7 @@ const UploadRepository = require('../../../Domains/uploads/UploadRepository');
 const UpdateUser = require('../../../Domains/users/entities/UpdateUser');
 const UserDetail = require('../../../Domains/users/entities/UserDetail');
 const UserRepository = require('../../../Domains/users/UserRepository');
+const AuthenticationTokenManager = require('../../security/AuthenticationTokenManager');
 const UploadImageUseCase = require('../UploadImageUseCase');
 
 describe('UploadImageUseCase', () => {
@@ -47,6 +48,10 @@ describe('UploadImageUseCase', () => {
 
   it('should orchestrating the upload image action correctly', async () => {
     // Arrange
+    const useCaseHeader = {
+      authorization: 'Bearer accessToken',
+    };
+
     const useCaseParams = {
       id: 'user-12',
     };
@@ -61,20 +66,6 @@ describe('UploadImageUseCase', () => {
         },
       },
     };
-
-    // photo.hapi.headers = 'content-type': 'image/jpeg'
-    // file: photo.pipe dan file.on
-    // meta: photo.hapi.filename
-    // photo: {
-    //  hapi: {
-    //    headers: {
-    //      'content-type': 'image/jpeg',
-    //    },
-    //    filename: 'image.jpeg,'
-    // }
-    //  pipe:
-    //  on:
-    // }
 
     const userDetail = new UserDetail({
       id: useCaseParams.id,
@@ -93,6 +84,8 @@ describe('UploadImageUseCase', () => {
       photoUrl: null,
     });
 
+    const expectedAccessToken = 'accessToken';
+
     const { filename } = useCasePayload.photo.hapi.filename;
     const fileLocation = `http://${process.env.HOST}:${process.env.PORT}/upload/images/${filename}`;
 
@@ -103,28 +96,45 @@ describe('UploadImageUseCase', () => {
 
     const mockUploadRepository = new UploadRepository();
     const mockUserRepository = new UserRepository();
+    const mockAuthenticationTokenManager = new AuthenticationTokenManager();
 
     mockUploadRepository.writeFile = jest.fn()
       .mockImplementation(() => Promise.resolve(filename));
 
     mockUserRepository.getUserById = jest.fn()
       .mockImplementation(() => Promise.resolve(userDetail));
-
     mockUserRepository.updateUser = jest.fn()
       .mockImplementation(() => Promise.resolve());
+    mockUserRepository.checkRole = jest.fn()
+      .mockImplementation(() => Promise.resolve('dosen'));
+
+    mockAuthenticationTokenManager.getTokenFromHeader = jest.fn()
+      .mockImplementation(() => Promise.resolve('accessToken'));
+    mockAuthenticationTokenManager.verifyAccessToken = jest.fn()
+      .mockImplementation(() => Promise.resolve());
+    mockAuthenticationTokenManager.decodePayload = jest.fn()
+      .mockImplementation(() => Promise.resolve(useCaseParams));
 
     const uploadImageUseCase = new UploadImageUseCase({
       uploadRepository: mockUploadRepository,
       userRepository: mockUserRepository,
+      authenticationTokenManager: mockAuthenticationTokenManager,
     });
 
     // Action
-    await uploadImageUseCase.execute(useCasePayload, useCaseParams);
+    await uploadImageUseCase.execute(useCasePayload, useCaseParams, useCaseHeader);
 
     // Assert
     expect(mockUserRepository.getUserById).toHaveBeenCalledWith(useCaseParams.id);
+    expect(mockUserRepository.checkRole).toHaveBeenCalledWith(useCaseParams.id);
+    expect(mockUserRepository.updateUser).toHaveBeenCalledWith(useCaseParams.id, userUpdate);
+
     expect(mockUploadRepository.writeFile)
       .toHaveBeenCalledWith(useCasePayload.photo, useCasePayload.photo.hapi);
-    expect(mockUserRepository.updateUser).toHaveBeenCalledWith(useCaseParams.id, userUpdate);
+
+    expect(mockAuthenticationTokenManager.getTokenFromHeader)
+      .toBeCalledWith(useCaseHeader.authorization);
+    expect(mockAuthenticationTokenManager.verifyAccessToken).toBeCalledWith(expectedAccessToken);
+    expect(mockAuthenticationTokenManager.decodePayload).toBeCalledWith(expectedAccessToken);
   });
 });
