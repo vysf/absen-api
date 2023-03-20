@@ -74,6 +74,7 @@ const useCaseInstanceContainer = {
   uploadImageUseCase: new UploadImageUseCase({
     userRepository: serviceInstanceContainer.userRepository,
     uploadRepository: serviceInstanceContainer.uploadRepository,
+    authenticationTokenManager: serviceInstanceContainer.authenticationTokenManager,
   }),
   loginUserUseCase: new LoginUserUseCase({
     userRepository: serviceInstanceContainer.userRepository,
