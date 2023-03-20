@@ -99,7 +99,7 @@ describe('UpdateUserPasswordUseCase', () => {
       expect(mockUserRepository.updateUserPasswordById).toBeCalledWith(userId.id, 'encrypted_password');
     });
 
-    it('should only allow admin to update their own password and another user password', async () => {
+    it('should only allow admin to update their own password', async () => {
       const userId = 'user-admin';
 
       mockUserRepository.updateUserPasswordById = jest.fn()
@@ -128,6 +128,37 @@ describe('UpdateUserPasswordUseCase', () => {
       expect(mockUserRepository.checkRole).toBeCalledWith(userId);
       expect(mockPasswordHash.hash).toBeCalledWith(useCasePayload.password);
       expect(mockUserRepository.updateUserPasswordById).toBeCalledWith(userId, 'encrypted_password');
+    });
+
+    it('should only allow admin to update another user password', async () => {
+      const userId = 'user-admin';
+
+      mockUserRepository.updateUserPasswordById = jest.fn()
+        .mockImplementation(() => Promise.resolve());
+      mockUserRepository.checkRole = jest.fn()
+        .mockImplementation(() => Promise.resolve('admin'));
+      mockAuthenticationTokenManager.decodePayload = jest.fn()
+        .mockImplementation(() => Promise.resolve({ id: userId }));
+
+      const updateUserPasswordUseCase = new UpdateUserPasswordUseCase({
+        userRepository: mockUserRepository,
+        passwordHash: mockPasswordHash,
+        authenticationTokenManager: mockAuthenticationTokenManager,
+      });
+
+      // Action
+      await updateUserPasswordUseCase.execute(useCasePayload, useCaseParams, useCaseHeader);
+
+      // Assert
+      expect(mockAuthenticationTokenManager.getTokenFromHeader)
+        .toBeCalledWith(useCaseHeader.authorization);
+      expect(mockAuthenticationTokenManager.verifyAccessToken).toBeCalledWith(expectedAccessToken);
+      expect(mockAuthenticationTokenManager.decodePayload).toBeCalledWith(expectedAccessToken);
+
+      expect(mockUserRepository.checkUserIsExist).toBeCalledWith(useCaseParams.id);
+      expect(mockUserRepository.checkRole).toBeCalledWith(userId);
+      expect(mockPasswordHash.hash).toBeCalledWith(useCasePayload.password);
+      expect(mockUserRepository.updateUserPasswordById).toBeCalledWith(useCaseParams.id, 'encrypted_password');
     });
   });
 });
