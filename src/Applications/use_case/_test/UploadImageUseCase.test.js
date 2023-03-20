@@ -46,7 +46,7 @@ describe('UploadImageUseCase', () => {
       .toThrowError('UPLOAD_IMAGE.NOT_MEET_MIME_TYPE_SPECIFICATION');
   });
 
-  it('should orchestrating the upload image action correctly', async () => {
+  describe('should orchestrating the upload image action correctly', () => {
     // Arrange
     const useCaseHeader = {
       authorization: 'Bearer accessToken',
@@ -105,36 +105,70 @@ describe('UploadImageUseCase', () => {
       .mockImplementation(() => Promise.resolve(userDetail));
     mockUserRepository.updateUser = jest.fn()
       .mockImplementation(() => Promise.resolve());
-    mockUserRepository.checkRole = jest.fn()
-      .mockImplementation(() => Promise.resolve('dosen'));
 
     mockAuthenticationTokenManager.getTokenFromHeader = jest.fn()
       .mockImplementation(() => Promise.resolve('accessToken'));
     mockAuthenticationTokenManager.verifyAccessToken = jest.fn()
       .mockImplementation(() => Promise.resolve());
-    mockAuthenticationTokenManager.decodePayload = jest.fn()
-      .mockImplementation(() => Promise.resolve(useCaseParams));
 
-    const uploadImageUseCase = new UploadImageUseCase({
-      uploadRepository: mockUploadRepository,
-      userRepository: mockUserRepository,
-      authenticationTokenManager: mockAuthenticationTokenManager,
+    it('should orchestrating the upload image action for dosen role', async () => {
+      mockUserRepository.checkRole = jest.fn()
+        .mockImplementation(() => Promise.resolve('dosen'));
+      mockAuthenticationTokenManager.decodePayload = jest.fn()
+        .mockImplementation(() => Promise.resolve(useCaseParams));
+
+      const uploadImageUseCase = new UploadImageUseCase({
+        uploadRepository: mockUploadRepository,
+        userRepository: mockUserRepository,
+        authenticationTokenManager: mockAuthenticationTokenManager,
+      });
+
+      // Action
+      await uploadImageUseCase.execute(useCasePayload, useCaseParams, useCaseHeader);
+
+      // Assert
+      expect(mockUserRepository.getUserById).toHaveBeenCalledWith(useCaseParams.id);
+      expect(mockUserRepository.checkRole).toHaveBeenCalledWith(useCaseParams.id);
+      expect(mockUserRepository.updateUser).toHaveBeenCalledWith(useCaseParams.id, userUpdate);
+
+      expect(mockUploadRepository.writeFile)
+        .toHaveBeenCalledWith(useCasePayload.photo, useCasePayload.photo.hapi);
+
+      expect(mockAuthenticationTokenManager.getTokenFromHeader)
+        .toBeCalledWith(useCaseHeader.authorization);
+      expect(mockAuthenticationTokenManager.verifyAccessToken).toBeCalledWith(expectedAccessToken);
+      expect(mockAuthenticationTokenManager.decodePayload).toBeCalledWith(expectedAccessToken);
     });
 
-    // Action
-    await uploadImageUseCase.execute(useCasePayload, useCaseParams, useCaseHeader);
+    it('should orchestrating the upload image action for admin role', async () => {
+      const adminId = 'user-1098';
 
-    // Assert
-    expect(mockUserRepository.getUserById).toHaveBeenCalledWith(useCaseParams.id);
-    expect(mockUserRepository.checkRole).toHaveBeenCalledWith(useCaseParams.id);
-    expect(mockUserRepository.updateUser).toHaveBeenCalledWith(useCaseParams.id, userUpdate);
+      mockUserRepository.checkRole = jest.fn()
+        .mockImplementation(() => Promise.resolve('admin'));
+      mockAuthenticationTokenManager.decodePayload = jest.fn()
+        .mockImplementation(() => Promise.resolve({ id: adminId }));
 
-    expect(mockUploadRepository.writeFile)
-      .toHaveBeenCalledWith(useCasePayload.photo, useCasePayload.photo.hapi);
+      const uploadImageUseCase = new UploadImageUseCase({
+        uploadRepository: mockUploadRepository,
+        userRepository: mockUserRepository,
+        authenticationTokenManager: mockAuthenticationTokenManager,
+      });
 
-    expect(mockAuthenticationTokenManager.getTokenFromHeader)
-      .toBeCalledWith(useCaseHeader.authorization);
-    expect(mockAuthenticationTokenManager.verifyAccessToken).toBeCalledWith(expectedAccessToken);
-    expect(mockAuthenticationTokenManager.decodePayload).toBeCalledWith(expectedAccessToken);
+      // Action
+      await uploadImageUseCase.execute(useCasePayload, useCaseParams, useCaseHeader);
+
+      // Assert
+      expect(mockUserRepository.getUserById).toHaveBeenCalledWith(useCaseParams.id);
+      expect(mockUserRepository.checkRole).toHaveBeenCalledWith(adminId);
+      expect(mockUserRepository.updateUser).toHaveBeenCalledWith(useCaseParams.id, userUpdate);
+
+      expect(mockUploadRepository.writeFile)
+        .toHaveBeenCalledWith(useCasePayload.photo, useCasePayload.photo.hapi);
+
+      expect(mockAuthenticationTokenManager.getTokenFromHeader)
+        .toBeCalledWith(useCaseHeader.authorization);
+      expect(mockAuthenticationTokenManager.verifyAccessToken).toBeCalledWith(expectedAccessToken);
+      expect(mockAuthenticationTokenManager.decodePayload).toBeCalledWith(expectedAccessToken);
+    });
   });
 });
