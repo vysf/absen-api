@@ -82,6 +82,11 @@ path: ```/users/{id}/photo```
 - should response 400 if payload has no image file
 - should response 400 if image file size more than 50kb
 
+### Get Foto Seorang Pengguna (Admin & Dosen)
+method: ```GET```
+path: ```/upload/{params*}```
+- should response 200 and show user photo
+
 ### ⚠️ Hapus Data Seorang Pengguna (Admin)
 method: ```DELETE```
 path: ```/users/{id}```

@@ -207,6 +207,25 @@ response body:
 	"message": "foto profil berhasil diubah",
 }
 ```
+
+## Get Foto Seorang Pengguna (Admin & Dosen)
+method: ```GET```
+path: ```'/upload/{params*}'```
+body request:
+```json
+{}
+```
+status code: ```200```
+response body:
+```json
+{
+	"status": "success",
+	"data": {
+		"photo_url": "http://localhost:5000/upload/images/photo.jpg",
+	},
+}
+```
+
 ## ✅ Hapus Data Seorang Pengguna (Admin)
 method: ```DELETE```
 path: ```/users/{id}```
