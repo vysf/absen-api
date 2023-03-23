@@ -42,7 +42,7 @@ const serviceInstanceContainer = {
   authenticationRepository: new AuthenticationRepositoryPostgres(pool),
   // eslint-disable-next-line max-len
   // uploadRepository: new StorageService(path.resolve(__dirname, 'infrastructures/database/storage/file/images')),
-  uploadRepository: new UploadRepositoryStorage(path.resolve(__dirname, 'storage/file/images'), fs, date),
+  uploadRepository: new UploadRepositoryStorage(path.resolve(__dirname, '../Interfaces/http/api/uploads/storage/file/images'), fs, date),
   authenticationTokenManager: new JwtTokenManager(Jwt.token),
   passwordHash: new BcryptPasswordHash(bcrypt),
 };
