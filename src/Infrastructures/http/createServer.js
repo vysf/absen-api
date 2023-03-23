@@ -1,14 +1,29 @@
 const Hapi = require('@hapi/hapi');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const Inert = require('@hapi/inert');
+
 const ClientError = require('../../Commons/exceptions/ClientError');
 const DomainErrorTranslator = require('../../Commons/exceptions/DomainErrorTranslator');
 const users = require('../../Interfaces/http/api/users');
 const authentications = require('../../Interfaces/http/api/authentications');
+const uploads = require('../../Interfaces/http/api/uploads');
 
 const createServer = async (injection) => {
   const server = Hapi.server({
     host: process.env.HOST,
     port: process.env.PORT,
+    routes: {
+      cors: {
+        origin: ['*'],
+      },
+    },
   });
+
+  await server.register([
+    {
+      plugin: Inert,
+    },
+  ]);
 
   await server.register([
     {
@@ -17,6 +32,10 @@ const createServer = async (injection) => {
     },
     {
       plugin: authentications,
+      options: { injection },
+    },
+    {
+      plugin: uploads,
       options: { injection },
     },
   ]);

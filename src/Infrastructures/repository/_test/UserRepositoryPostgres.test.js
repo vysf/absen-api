@@ -287,6 +287,16 @@ describe('UserRepositoryPostgres', () => {
   });
 
   describe('getUserById', () => {
+    it('should throw NotFoundError when user not found', async () => {
+      // Arrange
+      const id = 'xxx';
+      const userRepositoryPostgres = new UserRepositoryPostgres(pool, {}, {});
+
+      // Action and Assert
+      await expect(userRepositoryPostgres.getUserById(id)).rejects
+        .toThrowError(NotFoundError);
+    });
+
     it('should return user deatil by id', async () => {
       // Arrange
       const id = 'user-098';
