@@ -5,15 +5,15 @@ const path = require('path');
 const UploadRepositoryStorage = require('../UploadRepositoryStorage');
 
 describe('UploadRepositoryStorage', () => {
-  beforeAll(() => {
-    fs.rmSync('./src/Infrastructures/storage', { recursive: true, force: true });
-  });
-
-  const folder = './src/Infrastructures/storage/file/images';
+  const folder = '../../../Interfaces/http/api/uploads/storage/file/images';
   const filename = 'flower.jpg';
   const dateGenerator = {
     now: jest.fn(() => '20220305150000'),
   };
+
+  beforeAll(() => {
+    fs.rmSync(folder, { recursive: true, force: true });
+  });
 
   describe('constructor', () => {
     it('should not create upload directory if it already exists', () => {
