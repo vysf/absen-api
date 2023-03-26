@@ -6,9 +6,6 @@ class UploadsHandler {
   }
 
   async postUploadPhotoHandler(request, h) {
-    // console.log('PAYLOAD:\n', request.payload);
-    // console.log('PARAMS:\n', request.params);
-    // console.log('HEADERS:\n', request.headers);
     const { uploadImageUseCase } = this._container;
     await uploadImageUseCase.execute(request.payload, request.params, request.headers);
 

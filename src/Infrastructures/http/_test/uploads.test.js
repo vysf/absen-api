@@ -1,5 +1,5 @@
 /* eslint-disable import/no-extraneous-dependencies */
-// const path = require('path');
+const path = require('path');
 const FormData = require('form-data');
 // const { Readable } = require('stream');
 const fs = require('fs');
@@ -12,6 +12,7 @@ const createServer = require('../createServer');
 describe('/users/{id}/photo', () => {
   afterAll(async () => {
     await pool.end();
+    fs.rmSync(path.join(__dirname, '../../../Interfaces/http/api/uploads/storage'), { recursive: true, force: true });
   });
 
   afterEach(async () => {
@@ -26,21 +27,20 @@ describe('/users/{id}/photo', () => {
       //   photo: fs.readFileSync('tests/images/flower.jpg'),
       // };
       // const stream = Readable.from(buffer);
-
+      const filePath = path.join(__dirname, '../../../../tests/images/', 'flower.jpg');
+      const file = fs.readFileSync(filePath);
       const requestPayload = new FormData();
-      requestPayload.append('photo', fs.readFileSync('tests/images/flower.jpg'));
-
-      // console.log(fs.readFileSync('tests/images/flower.jpg'));
-      // console.log(path.join('tests/images/flower.png'));
+      requestPayload.append('photo', file, { filename: 'flower.jpg' });
 
       const { accessToken, id } = await ServerTestHelper
         .getAccessTokenAndUserIdHelper({ server });
       // console.log(requestPayload);
       // Action
+      const buffer = await requestPayload.getBuffer();
       const response = await server.inject({
         method: 'POST',
         url: `/upload/${id}/photo`,
-        payload: requestPayload.getBuffer(),
+        payload: buffer,
         headers: {
           Authorization: `Bearer ${accessToken}`,
           ...requestPayload.getHeaders(),
@@ -49,7 +49,6 @@ describe('/users/{id}/photo', () => {
 
       // Assert
       const responseJson = JSON.parse(response.payload);
-      // console.log(response.payload, requestPayload.getHeaders());
 
       expect(response.statusCode).toEqual(200);
       expect(responseJson.status).toEqual('success');
