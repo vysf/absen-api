@@ -190,9 +190,9 @@ response body:
 	"message": "password berhasil diubah",
 }
 ```
-## Upload Foto Seorang Pengguna (Admin & Dosen)
+## ✅ Upload Foto Seorang Pengguna (Admin & Dosen)
 method: ```POST```
-path: ```/users/{id}/photo```
+path: ```/upload/{id}/photo```
 body request:
 ```json
 {
@@ -208,7 +208,7 @@ response body:
 }
 ```
 
-## Get Foto Seorang Pengguna (Admin & Dosen)
+## ✅ Get Foto Seorang Pengguna (Admin & Dosen)
 method: ```GET```
 path: ```'/upload/{params*}'```
 body request:

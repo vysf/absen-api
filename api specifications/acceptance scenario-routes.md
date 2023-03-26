@@ -55,7 +55,7 @@ Scenario test:
 - ~~should response 200 and get a user detail~~
 - ~~should response 400 if user not registered in database~~
 
-### ⚠️ Ubah Data Seorang Pengguna (Admin & Dosen)
+### ✅ Ubah Data Seorang Pengguna (Admin & Dosen)
 method: ```PUT```
 path: ```/users/{id}```
 Scenario test for dosen role:
@@ -64,7 +64,7 @@ Scenario test for dosen role:
 - should response 400 if payload has wrong data type
 - should response 400 if id not registered in database
 
-### ⚠️ Ubah Password Seorang Pengguna (Admin & Dosen)
+### ✅ Ubah Password Seorang Pengguna (Admin & Dosen)
 method: ```PUT```
 path: ```/users/{id}```
 - should response 201 and update user password
@@ -72,9 +72,9 @@ path: ```/users/{id}```
 - should response 400 if payload has wrong data type
 - should response 400 if id not registered in database
 
-### Upload Foto Seorang Pengguna (Admin & Dosen)
+### ✅ Upload Foto Seorang Pengguna (Admin & Dosen)
 method: ```POST```
-path: ```/users/{id}/photo```
+path: ```/upload/{id}/photo```
 - should response 201 and update user photo
 - should response 400 if payload not contain needed property
 - should response 400 if payload has wrong data type
@@ -82,12 +82,12 @@ path: ```/users/{id}/photo```
 - should response 400 if payload has no image file
 - should response 400 if image file size more than 50kb
 
-### Get Foto Seorang Pengguna (Admin & Dosen)
+### ✅ Get Foto Seorang Pengguna (Admin & Dosen)
 method: ```GET```
 path: ```/upload/{params*}```
 - should response 200 and show user photo
 
-### ⚠️ Hapus Data Seorang Pengguna (Admin)
+### ✅ Hapus Data Seorang Pengguna (Admin)
 method: ```DELETE```
 path: ```/users/{id}```
 - ~~should response 200 and delete user data~~
