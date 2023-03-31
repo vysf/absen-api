@@ -22,7 +22,8 @@ class UpdateUserUseCase {
    * Adapun algoritma yang berjalan adalah:
    * 1. mendapatkan access token dari `useCaseHeader`
    * 2. melakukan verifikasi access token
-   * 3. mendapatkan id user dari `useCaseParams`
+   * 3. mendapatkan id user dari `useCaseParams` dan melakukan cek
+   * ketersedian user didalam database berdasarkan id tersebut
    * 4. Jika role adalah admin maka dia bisa mengubah data sendiri dan user lain
    * (id -> useCaseParams)
    * 5. jika role adalah dosen maka dia hanya bisa mengubah data sendiri
@@ -44,6 +45,7 @@ class UpdateUserUseCase {
 
     // #3
     const { id } = useCaseParams;
+    await this._userRepository.checkUserIsExist(id);
 
     // #4
     const role = await this._userRepository.checkRole(userId);

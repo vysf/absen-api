@@ -47,6 +47,8 @@ describe('UpdateUserUseCase', () => {
       .mockImplementation(() => Promise.resolve());
     mockUserRepository.checkRole = jest.fn()
       .mockImplementation(() => Promise.resolve('dosen'));
+    mockUserRepository.checkUserIsExist = jest.fn()
+      .mockImplementation(() => Promise.resolve());
 
     mockAuthenticationTokenManager.getTokenFromHeader = jest.fn()
       .mockImplementation(() => Promise.resolve('accessToken'));
@@ -79,11 +81,12 @@ describe('UpdateUserUseCase', () => {
     expect(mockAuthenticationTokenManager.decodePayload).toBeCalledWith(expectedAccessToken);
 
     expect(mockUserRepository.getUserById).toHaveBeenCalledWith(anotherId);
+    expect(mockUserRepository.checkUserIsExist).toHaveBeenCalledWith(useCaseParams.id);
     expect(mockUserRepository.checkRole).toHaveBeenCalledWith(anotherId);
     expect(mockUserRepository.updateUser).toHaveBeenCalledWith(anotherId, userUpdate);
   });
 
-  it('should orchestrating the update user action for dosen role correctly', async () => {
+  it('should orchestrating the update user action for admin role correctly', async () => {
     // Arrange
     const useCasePayload = {
       statusKehadiran: 'hadir',
@@ -130,6 +133,8 @@ describe('UpdateUserUseCase', () => {
       .mockImplementation(() => Promise.resolve());
     mockUserRepository.checkRole = jest.fn()
       .mockImplementation(() => Promise.resolve('admin'));
+    mockUserRepository.checkUserIsExist = jest.fn()
+      .mockImplementation(() => Promise.resolve());
 
     mockAuthenticationTokenManager.getTokenFromHeader = jest.fn()
       .mockImplementation(() => Promise.resolve('accessToken'));
@@ -153,6 +158,7 @@ describe('UpdateUserUseCase', () => {
     expect(mockAuthenticationTokenManager.decodePayload).toBeCalledWith(expectedAccessToken);
 
     expect(mockUserRepository.getUserById).toHaveBeenCalledWith(useCaseParams.id);
+    expect(mockUserRepository.checkUserIsExist).toHaveBeenCalledWith(useCaseParams.id);
     expect(mockUserRepository.checkRole).toHaveBeenCalledWith(useCaseParams.id);
     expect(mockUserRepository.updateUser).toHaveBeenCalledWith(useCaseParams.id, userUpdate);
   });
