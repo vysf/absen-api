@@ -361,6 +361,7 @@ describe('UserRepositoryPostgres', () => {
   describe('updateUser', () => {
     it('should update user data correctly', async () => {
       // Arrange
+      // test
       const id = 'user-120';
 
       await UsersTableTestHelper.addUser({

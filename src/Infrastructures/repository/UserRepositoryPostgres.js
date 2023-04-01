@@ -136,6 +136,7 @@ class UserRepositoryPostgres extends UserRepository {
       fullname, golongan, nip,
       nidn, pangkat, jabatanStruktural,
       jabatanFungsional, statusKehadiran,
+      photoUrl,
     } = updateUser;
 
     const query = {
@@ -147,14 +148,15 @@ class UserRepositoryPostgres extends UserRepository {
       pangkat = $5, 
       jabatan_struktural = $6,
       jabatan_fungsional = $7,
-      status_kehadiran = $8 
-      WHERE id = $9`,
+      status_kehadiran = $8,
+      photo_url = $9 
+      WHERE id = $10`,
       values: [
         fullname, golongan,
         nip, nidn, pangkat,
         jabatanStruktural,
         jabatanFungsional,
-        statusKehadiran, id,
+        statusKehadiran, photoUrl, id,
       ],
     };
 
