@@ -28,6 +28,7 @@ describe('UpdateUser entities', () => {
       jabatanStruktural: null,
       jabatanFungsional: null,
       statusKehadiran: null,
+      photoUrl: null,
     };
 
     // Action & Assert
@@ -45,6 +46,7 @@ describe('UpdateUser entities', () => {
       jabatanStruktural: null,
       jabatanFungsional: null,
       statusKehadiran: null,
+      photoUrl: null,
     };
 
     // Action
@@ -60,5 +62,6 @@ describe('UpdateUser entities', () => {
     expect(updateUser.jabatanStruktural).toEqual(payload.jabatanStruktural);
     expect(updateUser.jabatanFungsional).toEqual(payload.jabatanFungsional);
     expect(updateUser.statusKehadiran).toEqual(payload.statusKehadiran);
+    expect(updateUser.photoUrl).toEqual(payload.photoUrl);
   });
 });

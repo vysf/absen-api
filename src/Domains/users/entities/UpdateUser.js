@@ -11,6 +11,7 @@ class UpdateUser {
     this.jabatanStruktural = payload.jabatanStruktural;
     this.jabatanFungsional = payload.jabatanFungsional;
     this.statusKehadiran = payload.statusKehadiran;
+    this.photoUrl = payload.photoUrl;
   }
 
   _verifyPayload(payload) {
@@ -21,7 +22,8 @@ class UpdateUser {
         || !('pangkat' in payload)
         || !('jabatanStruktural' in payload)
         || !('jabatanFungsional' in payload)
-        || !('statusKehadiran' in payload)) {
+        || !('statusKehadiran' in payload)
+        || !('photoUrl' in payload)) {
       throw new Error('UPDATE_USER.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
