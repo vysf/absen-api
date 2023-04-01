@@ -10,7 +10,7 @@ const routes = (handler) => ([
         allow: 'multipart/form-data',
         multipart: true,
         output: 'stream',
-        maxBytes: 500000, // 500KB
+        maxBytes: 512000,
       },
     },
   },
@@ -19,7 +19,7 @@ const routes = (handler) => ([
     path: '/upload/{params*}',
     handler: {
       directory: {
-        path: path.resolve(__dirname, 'file'),
+        path: path.resolve(__dirname, 'storage/file'),
       },
     },
   },
