@@ -112,6 +112,9 @@ describe('UploadImageUseCase', () => {
       .mockImplementation(() => Promise.resolve());
 
     it('should orchestrating the upload image action for dosen role', async () => {
+      mockUserRepository.checkUserIsExist = jest.fn()
+        .mockImplementation(() => Promise.resolve());
+
       mockUserRepository.checkRole = jest.fn()
         .mockImplementation(() => Promise.resolve('dosen'));
       mockAuthenticationTokenManager.decodePayload = jest.fn()
@@ -127,6 +130,8 @@ describe('UploadImageUseCase', () => {
       await uploadImageUseCase.execute(useCasePayload, useCaseParams, useCaseHeader);
 
       // Assert
+      expect(mockUserRepository.checkUserIsExist).toHaveBeenCalledWith(useCaseParams.id);
+
       expect(mockUserRepository.getUserById).toHaveBeenCalledWith(useCaseParams.id);
       expect(mockUserRepository.checkRole).toHaveBeenCalledWith(useCaseParams.id);
       expect(mockUserRepository.updateUser).toHaveBeenCalledWith(useCaseParams.id, userUpdate);

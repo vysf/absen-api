@@ -24,7 +24,7 @@ class UploadImageUseCase {
    * Triger untuk menjalankan alur bisnis.\
    * Adapun algoritma yang berjalan adalah:
    * 1. mendapatkan id dari `useCaseParams` dan photo dari `useCasePayload`
-   * 2. melakukan validasi image header
+   * 2. melakukan validasi image header dan validasi ktersediaan user berdasarkan id param
    * 3. membuat filename dan menyimpan gambar di folder yang ditentukan\
    * see `infrastructures/injections`
    * 4. membuat url file location
@@ -42,7 +42,16 @@ class UploadImageUseCase {
     const { photo } = useCasePayload;
 
     // #2
+    // sebagai catatan
+    // hapi: {
+    //   filename: 'text-small.txt',
+    //   headers: {
+    //     'content-disposition': 'form-data; name="photo"; filename="text-small.txt"',
+    //     'content-type': 'text/plain'
+    //   }
+    // },
     this._validateImageHeaders(photo.hapi.headers);
+    await this._userRepository.checkUserIsExist(id);
 
     // #3
     const filename = await this._uploadRepository.writeFile(photo, photo.hapi);
@@ -83,7 +92,7 @@ class UploadImageUseCase {
       throw new Error('UPLOAD_IMAGE.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
-    const imageMimeType = ['image/apng', 'image/avif', 'image/gif', 'image/jpeg', 'image/png', 'image/webp'].includes(payload['content-type']);
+    const imageMimeType = ['image/apng', 'image/avif', 'image/gif', 'image/jpeg', 'image/jpg', 'image/png', 'image/webp'].includes(payload['content-type']);
     if (!imageMimeType) {
       throw new Error('UPLOAD_IMAGE.NOT_MEET_MIME_TYPE_SPECIFICATION');
     }
