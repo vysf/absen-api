@@ -21,6 +21,7 @@ DomainErrorTranslator._directories = {
   'DETAIL_USER.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('properti detail user berbeda tipe data'),
   'GET_USER_USE_CASE.NOT_CONTAIN_ID': new InvariantError('properti get user ada yang kosong'),
   'GET_USER_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError('properti get user berbeda tipe data'),
+  'UPLOAD_IMAGE.NOT_MEET_MIME_TYPE_SPECIFICATION': new InvariantError('harus mengupload file gambar'),
 };
 
 module.exports = DomainErrorTranslator;
