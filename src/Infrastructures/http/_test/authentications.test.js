@@ -125,7 +125,7 @@ describe('/authentications endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('harus mengirimkan username dan password');
+      expect(responseJson.message).toEqual('username atau password tidak boleh kosong');
     });
 
     it('should response 400 if login payload wrong data type', async () => {
