@@ -15,6 +15,7 @@ describe('GetAuthenticationUseCase', () => {
     const expectedAuthentication = new NewAuth({
       accessToken: 'access_token',
       refreshToken: 'refresh_token',
+      role: 'dosen',
     });
     const mockUserRepository = new UserRepository();
     const mockAuthenticationRepository = new AuthenticationRepository();
@@ -59,9 +60,9 @@ describe('GetAuthenticationUseCase', () => {
     expect(mockUserRepository.checkRole)
       .toBeCalledWith('user-123');
     expect(mockAuthenticationTokenManager.createAccessToken)
-      .toBeCalledWith({ username: 'dicoding', id: 'user-123', role: 'dosen' });
+      .toBeCalledWith({ username: 'dicoding', id: 'user-123' });
     expect(mockAuthenticationTokenManager.createRefreshToken)
-      .toBeCalledWith({ username: 'dicoding', id: 'user-123', role: 'dosen' });
+      .toBeCalledWith({ username: 'dicoding', id: 'user-123' });
     expect(mockAuthenticationRepository.addToken)
       .toBeCalledWith(expectedAuthentication.refreshToken);
   });

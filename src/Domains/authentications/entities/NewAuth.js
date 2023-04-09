@@ -5,16 +5,17 @@ class NewAuth {
 
     this.accessToken = payload.accessToken;
     this.refreshToken = payload.refreshToken;
+    this.role = payload.role;
   }
 
   _verifyPayload(payload) {
-    const { accessToken, refreshToken } = payload;
+    const { accessToken, refreshToken, role } = payload;
 
-    if (!accessToken || !refreshToken) {
+    if (!accessToken || !refreshToken || !role) {
       throw new Error('NEW_AUTH.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
-    if (typeof accessToken !== 'string' || typeof refreshToken !== 'string') {
+    if (typeof accessToken !== 'string' || typeof refreshToken !== 'string' || typeof role !== 'string') {
       throw new Error('NEW_AUTH.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }

@@ -16,6 +16,7 @@ describe('NewAuth entities', () => {
     const payload = {
       accessToken: 'accessToken',
       refreshToken: 1234,
+      role: 1,
     };
 
     // Action & Assert
@@ -27,6 +28,7 @@ describe('NewAuth entities', () => {
     const payload = {
       accessToken: 'accessToken',
       refreshToken: 'refreshToken',
+      role: 'admin',
     };
 
     // Action
@@ -36,5 +38,6 @@ describe('NewAuth entities', () => {
     expect(newAuth).toBeInstanceOf(NewAuth);
     expect(newAuth.accessToken).toEqual(payload.accessToken);
     expect(newAuth.refreshToken).toEqual(payload.refreshToken);
+    expect(newAuth.role).toEqual(payload.role);
   });
 });
