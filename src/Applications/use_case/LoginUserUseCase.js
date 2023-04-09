@@ -54,12 +54,13 @@ class LoginUserUseCase {
 
     // #4
     const id = await this._userRepository.getIdByUsername(username);
+    const role = await this._userRepository.checkRole(id);
 
     // #5
     const accessToken = await this._authenticationTokenManager
-      .createAccessToken({ username, id });
+      .createAccessToken({ username, id, role });
     const refreshToken = await this._authenticationTokenManager
-      .createRefreshToken({ username, id });
+      .createRefreshToken({ username, id, role });
 
     const newAuthentication = new NewAuthentication({
       accessToken,
