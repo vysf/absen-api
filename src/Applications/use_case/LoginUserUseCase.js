@@ -58,7 +58,7 @@ class LoginUserUseCase {
 
     // #5
     const accessToken = await this._authenticationTokenManager
-      .createAccessToken({ username, id });
+      .createAccessToken({ username, id, exp: Math.floor(Date.now() / 1000) + (1 * 60) });
     const refreshToken = await this._authenticationTokenManager
       .createRefreshToken({ username, id });
 
